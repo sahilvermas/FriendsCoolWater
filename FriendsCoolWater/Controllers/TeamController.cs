@@ -1,11 +1,13 @@
 ﻿using FriendsCoolWater.Data;
 using FriendsCoolWater.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FriendsCoolWater.Controllers
 {
+    [Authorize(Policy = "RequiredLoggedIn")]
     [Route("api/[controller]")]
     public class TeamController : Controller
     {
@@ -27,6 +29,7 @@ namespace FriendsCoolWater.Controllers
             return Ok(_db.Teams.Where(t => t.Id == id).ToList());
         }
 
+        [Authorize(Policy = "RequiredAdminRole")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddTeam([FromBody]TeamModel formData)
         {
@@ -43,6 +46,7 @@ namespace FriendsCoolWater.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "RequiredAdminRole")]
         [HttpPost("[action]")]
         public async Task<IActionResult> UpdateTeam([FromRoute]int id, [FromBody]TeamModel formData)
         {
@@ -67,6 +71,7 @@ namespace FriendsCoolWater.Controllers
             return Ok(new JsonResult($"The Team with Id {id} updated sucessfully."));
         }
 
+        [Authorize(Policy = "RequiredAdminRole")]
         [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteTeam([FromRoute] int id)
         {
