@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FriendsCoolWater.Models
 {
+    [Table("Teams")]
     public class TeamModel
     {
         [Key]
@@ -18,6 +20,6 @@ namespace FriendsCoolWater.Models
         [Required]
         public bool Active { get; set; }
 
-        public virtual ICollection<TeamModel> Teams { get; set; }
+        public virtual ICollection<EmployeeModel> Employees { get; set; }
     }
 }

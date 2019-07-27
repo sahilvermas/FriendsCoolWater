@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FriendsCoolWater.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190727091844_InitialSetup")]
+    [Migration("20190727100426_InitialSetup")]
     partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,20 +23,25 @@ namespace FriendsCoolWater.Migrations
 
             modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(30);
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasMaxLength(30);
 
-                    b.Property<int?>("TeamIdId");
+                    b.Property<int>("TeamId")
+                        .HasColumnName("Fk_TeamId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamIdId");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -56,11 +61,7 @@ namespace FriendsCoolWater.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int?>("TeamModelId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("TeamModelId");
 
                     b.ToTable("Teams");
                 });
@@ -248,16 +249,10 @@ namespace FriendsCoolWater.Migrations
 
             modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
                 {
-                    b.HasOne("FriendsCoolWater.Models.TeamModel", "TeamId")
-                        .WithMany()
-                        .HasForeignKey("TeamIdId");
-                });
-
-            modelBuilder.Entity("FriendsCoolWater.Models.TeamModel", b =>
-                {
-                    b.HasOne("FriendsCoolWater.Models.TeamModel")
-                        .WithMany("Teams")
-                        .HasForeignKey("TeamModelId");
+                    b.HasOne("FriendsCoolWater.Models.TeamModel", "Teams")
+                        .WithMany("Employees")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -55,18 +55,11 @@ namespace FriendsCoolWater.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 100, nullable: true),
-                    Active = table.Column<bool>(nullable: false),
-                    TeamModelId = table.Column<int>(nullable: true)
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Teams_Teams_TeamModelId",
-                        column: x => x.TeamModelId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,21 +172,22 @@ namespace FriendsCoolWater.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Active = table.Column<bool>(nullable: false),
-                    TeamIdId = table.Column<int>(nullable: true)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Fk_TeamId = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(maxLength: 30, nullable: true),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Teams_TeamIdId",
-                        column: x => x.TeamIdId,
+                        name: "FK_Employees_Teams_Fk_TeamId",
+                        column: x => x.Fk_TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -251,14 +245,9 @@ namespace FriendsCoolWater.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_TeamIdId",
+                name: "IX_Employees_Fk_TeamId",
                 table: "Employees",
-                column: "TeamIdId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teams_TeamModelId",
-                table: "Teams",
-                column: "TeamModelId");
+                column: "Fk_TeamId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
