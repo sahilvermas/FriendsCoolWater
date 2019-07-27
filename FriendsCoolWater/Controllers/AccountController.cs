@@ -32,7 +32,7 @@ namespace FriendsCoolWater.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [HttpPost("action")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Register([FromBody]RegisterViewModel formData)
         {
             // Will hold all the errors
@@ -53,7 +53,7 @@ namespace FriendsCoolWater.Controllers
 
                 // Sending Confirmation Email :: Do that later
 
-                return Ok(new { Username = user.UserName, Email = user.Email, Status = 1, Message = "Registration Successful" });
+                return Ok(new { Username = user.UserName, Email = user.Email, Status = 1, Message = "Registration Successfull" });
             }
             else
             {
@@ -67,7 +67,7 @@ namespace FriendsCoolWater.Controllers
             return BadRequest(new JsonResult(errorList));
         }
 
-        [HttpPost("action")]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromBody]LoginViewModel formData)
         {
             var user = await _userManager.FindByNameAsync(formData.Username);
