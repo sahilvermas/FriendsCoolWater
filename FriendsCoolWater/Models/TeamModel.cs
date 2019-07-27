@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FriendsCoolWater.Models
 {
@@ -16,5 +17,7 @@ namespace FriendsCoolWater.Models
 
         [Required]
         public bool Active { get; set; }
+
+        public virtual ICollection<TeamModel> Teams { get; set; }
     }
 }
