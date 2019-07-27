@@ -6,7 +6,7 @@ namespace FriendsCoolWater.Models
     public class TeamModel
     {
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
