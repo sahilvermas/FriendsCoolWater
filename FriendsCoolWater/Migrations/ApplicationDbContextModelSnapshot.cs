@@ -30,7 +30,7 @@ namespace FriendsCoolWater.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<string>("TeamIdId");
+                    b.Property<int?>("TeamIdId");
 
                     b.HasKey("Id");
 
@@ -41,8 +41,9 @@ namespace FriendsCoolWater.Migrations
 
             modelBuilder.Entity("FriendsCoolWater.Models.TeamModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<bool>("Active");
 
@@ -53,7 +54,7 @@ namespace FriendsCoolWater.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("TeamModelId");
+                    b.Property<int?>("TeamModelId");
 
                     b.HasKey("Id");
 

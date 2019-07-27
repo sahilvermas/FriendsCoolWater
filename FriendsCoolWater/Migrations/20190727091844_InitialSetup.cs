@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FriendsCoolWater.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,11 +51,12 @@ namespace FriendsCoolWater.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 100, nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    TeamModelId = table.Column<string>(nullable: true)
+                    TeamModelId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,7 +183,7 @@ namespace FriendsCoolWater.Migrations
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    TeamIdId = table.Column<string>(nullable: true)
+                    TeamIdId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
