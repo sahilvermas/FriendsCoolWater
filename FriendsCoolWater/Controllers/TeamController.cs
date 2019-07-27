@@ -23,7 +23,7 @@ namespace FriendsCoolWater.Controllers
             return Ok(_db.Teams.ToList());
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]/{id}")]
         public IActionResult GetTeam([FromRoute]int id)
         {
             return Ok(_db.Teams.Where(t => t.Id == id).ToList());
@@ -47,7 +47,7 @@ namespace FriendsCoolWater.Controllers
         }
 
         [Authorize(Policy = "RequiredAdminRole")]
-        [HttpPost("[action]")]
+        [HttpPost("[action]/{id}")]
         public async Task<IActionResult> UpdateTeam([FromRoute]int id, [FromBody]TeamModel formData)
         {
             if (!ModelState.IsValid)
@@ -72,7 +72,7 @@ namespace FriendsCoolWater.Controllers
         }
 
         [Authorize(Policy = "RequiredAdminRole")]
-        [HttpDelete("[action]")]
+        [HttpDelete("[action]/{id}")]
         public async Task<IActionResult> DeleteTeam([FromRoute] int id)
         {
             if (!ModelState.IsValid)
