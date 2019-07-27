@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace FriendsCoolWater.Controllers
 {
     [Route("api/[controller]")]
@@ -15,7 +13,9 @@ namespace FriendsCoolWater.Controllers
         private UserManager<IdentityUser> _userManager { get; set; }
         private SignInManager<IdentityUser> _signInManager { get; set; }
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
