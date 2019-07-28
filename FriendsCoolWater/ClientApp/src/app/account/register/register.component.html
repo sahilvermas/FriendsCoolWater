@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="text-center">
+            <div class="form-signin">
+                <h1 class="h3 mb-3 font-weight-normal">Register new user</h1>
+                <p>
+                    <label for="inputEmail" class="sr-only">Username</label>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email" required="required"
+                        autofocus="" [(ngModel)]="register.email">
+                </p>
+                <p>
+                    <label for="inputUsername" class="sr-only">Username</label>
+                    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="required"
+                        autofocus="" [(ngModel)]="register.username">
+                </p>
+                <p>
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required"
+                    [(ngModel)]="register.password">
+                </p>
+                <p>
+                    <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
+                    <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required="required"
+                    [(ngModel)]="register.confirmPassword">
+                </p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onRegister(register)">Sign up</button>
+                <button class="btn btn-lg btn-secondary btn-block" (click)="onClear(register)">Clear</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>

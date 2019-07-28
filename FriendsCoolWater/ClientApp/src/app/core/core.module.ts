@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavBarComponent } from '../nav-bar/nav-bar.component';
-import { TeamModule } from '../team/team.module';
-import { EmployeeModule } from '../employee/employee.module';
-import { LoginComponent } from '../account/login/login.component';
-import { RegisterComponent } from '../account/register/register.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { EmployeeModule } from './employee/employee.module';
 import { AccountModule } from '../account/account.module';
+import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { TeamModule } from './team/team.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [NavBarComponent],
+  declarations: [NavBarComponent, HomeComponent, PageNotFoundComponent],
   imports: [
-    CommonModule, AccountModule, TeamModule, EmployeeModule
+    CommonModule, RouterModule, HttpClientModule, AccountModule, TeamModule, EmployeeModule
   ],
-  exports: [NavBarComponent, AccountModule, TeamModule, EmployeeModule]
+  exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccountModule, TeamModule, EmployeeModule]
 })
 export class CoreModule { }
