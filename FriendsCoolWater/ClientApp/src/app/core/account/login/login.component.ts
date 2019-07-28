@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginModel } from '../account-model';
 import { AccountService } from '../account.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,21 +12,47 @@ import { AccountService } from '../account.service';
 export class LoginComponent implements OnInit {
 
   loginModel: LoginModel;
+  loginForm: FormGroup;
 
-  constructor(private accountService: AccountService) {
+  Username: FormControl;
+  Password: FormControl;
+  returnUrl: string;
+  errorMessage: string;
+  invalidLogin: boolean;
+
+  constructor(
+    private accountService: AccountService,
+    private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
   }
 
   ngOnInit() {
-    this.loginModel = new LoginModel('', '');
+
+    // Initialize Form Controls
+    this.Username = new FormControl('', [Validators.required]);
+    this.Password = new FormControl('', [Validators.required]);
+
+    // get return url from route parameters or default to '/'
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    this.loginForm = this.fb.group({
+      "Username": this.Username,
+      "Password": this.Password
+    });
   }
 
-  onLogin(login: LoginModel): void {
-    this.accountService.onLogin(login);
-  }
-
-  onClear(login: LoginModel): void {
-    login.username = '';
-    login.password = '';
+  onLogin(): void {
+    let formData = this.loginForm.value;
+    this.accountService
+      .onLogin(new LoginModel(formData.Username, formData.Password))
+      .subscribe(result => {
+        console.log(result);
+        let token = (<any>result).token;
+        console.log('Token' + token);
+      }, error => {
+        this.invalidLogin = true;
+        this.errorMessage = error.message;
+        console.log(error);
+      });
   }
 
 }

@@ -1,21 +1,30 @@
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <div class="text-center">
-            <div class="form-signin">
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <p>
-                    <label for="inputUsername" class="sr-only">Username</label>
-                    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="required" autofocus="" [(ngModel)]="loginModel.username">
-                </p>
-                <p>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required" [(ngModel)]="loginModel.password">
-                </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onLogin(loginModel)">Sign
-                    in</button>
-                <button class="btn btn-lg btn-secondary btn-block" (click)="onClear(loginModel)">Clear</button>
+        <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+            <h1 class="h3 mb-3 font-weight-normal">Login now</h1>
+            <div class="form-group">
+                <label for="Username" class="sr-only">Username</label>
+                <input type="text" formControlName="Username" class="form-control" placeholder="Username" required autofocus>
+                <small *ngIf="Username.touched && Username.errors" class="form-text text-danger">
+                        <span *ngIf="Username.hasError('required')">Username is required.</span>
+                    </small>
             </div>
+            <div class="form-group">
+                <label for="Password" class="sr-only">Password</label>
+                <input type="password" formControlName="Password" class="form-control" placeholder="Password" required autofocus>
+                <small *ngIf="Password.touched && Password.errors" class="form-text text-danger">
+                        <span *ngIf="Password.hasError('required')">Password is required.</span>
+                    </small>
+            </div>
+            <button class="btn btn-lg btn-success btn-block" type="submit" [disabled]="loginForm.invalid">Log in</button>
+        </form>
+
+        <div class="text-center mb-3 alert alert-warning alert-dismissible" *ngIf="invalidLogin" role="alert">
+            <strong>{{errorMessage}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
     <div class="col-md-4"></div>

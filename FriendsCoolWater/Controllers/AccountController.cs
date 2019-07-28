@@ -102,7 +102,7 @@ namespace FriendsCoolWater.Controllers
                 {
                     token = tokenHandler.WriteToken(token),
                     expiration = token.ValidTo,
-                    username = user.UserName,
+                    userName = user.UserName,
                     userRole = roles.FirstOrDefault()
                 });
             }
