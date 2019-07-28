@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { LoginModel } from './account-model';
-import { ApiUrl } from '../helpers/ApiUrl';
+import { ApiUrl } from '../../helpers/ApiUrl';
 
 @Injectable()
 export class AccountService {
