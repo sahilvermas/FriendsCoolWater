@@ -23,15 +23,20 @@
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <div class="nav-link text-warning">John Doe</div>
-                </li>
+            <ul class="navbar-nav mr-auto" *ngIf="!isUserLoggedIn">
                 <li class="nav-item">
                     <a class="nav-link" href="#" routerLink="/register">Register</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" routerLink="/login">Login</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav mr-auto" *ngIf="isUserLoggedIn">
+                <li class="nav-item active">
+                    <div class="nav-link text-info">{{loggedUserName}}</div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn" (click)="onLogout()">Logout</a>
                 </li>
             </ul>
         </div>

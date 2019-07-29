@@ -45,13 +45,21 @@ export class LoginComponent implements OnInit {
     this.accountService
       .onLogin(new LoginModel(formData.Username, formData.Password))
       .subscribe(result => {
-        console.log(result);
+        this.invalidLogin = false;
+        this.router.navigateByUrl(this.returnUrl);
+
         let token = (<any>result).token;
+        console.log(result);
         console.log('Token' + token);
+
       }, error => {
         this.invalidLogin = true;
-        this.errorMessage = error.message;
-        console.log(error);
+        if (error.status === 401) {
+          this.errorMessage = error.error.loginError;
+        } else {
+          this.errorMessage = 'Something happen wrong our end. Please try after some time.'
+          console.log(error);
+        }
       });
   }
 

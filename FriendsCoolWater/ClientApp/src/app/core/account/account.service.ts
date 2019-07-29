@@ -24,7 +24,7 @@ export class AccountService {
 
   onLogin(loginData: LoginModel) {
     return this.http
-      .post<any>(this.apiUrl.loginUrl, JSON.stringify(loginData))
+      .post<any>(this.apiUrl.loginUrl, loginData)
       .pipe(
         map(result => {
           if (result && result.token) {
@@ -69,7 +69,7 @@ export class AccountService {
   }
 
   // get the current logged user status
-  get isLoggedIn() {
+  get isUserLoggedIn() {
     return this.loginStatus.asObservable();
   }
 
