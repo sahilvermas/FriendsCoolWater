@@ -3,3 +3,12 @@
 .body-wrapper {
     margin-top: 20px
 }
+
+.link {
+    cursor: pointer;
+}
+
+.login-info {
+    margin-top: 2px;
+    font-weight: bold;
+}

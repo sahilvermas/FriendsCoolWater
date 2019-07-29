@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account/account.service';
 import { Utility } from '../helpers/Utility';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,10 +17,12 @@ export class NavBarComponent implements OnInit {
 
   constructor(private accountService: AccountService) { }
 
-  ngOnInit() {
-    this.isUserLoggedIn = parseInt(this.util.getLocalStorage('loginStatus')) !== 0;
+  LoginStatus$: Observable<boolean>;
+  LoggedUserName$: Observable<string>;
 
-    console.log(this.isUserLoggedIn);
+  ngOnInit() {
+    this.LoginStatus$ = this.accountService.isUserLoggedIn;
+    this.LoggedUserName$ = this.accountService.loggedUserName;
   }
 
   onLogout() {

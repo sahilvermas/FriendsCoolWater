@@ -77,7 +77,6 @@ export class AccountService {
     localStorage.removeItem('userRole');
 
     this.router.navigate(['/login']);
-    console.log('User logged out successfully');
   }
 
   // get the current logged user status

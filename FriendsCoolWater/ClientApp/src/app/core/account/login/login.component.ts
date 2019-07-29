@@ -42,23 +42,18 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     let formData = this.loginForm.value;
+    this.invalidLogin = false;
     this.accountService
       .Login(new LoginModel(formData.Username, formData.Password))
       .subscribe(result => {
         this.invalidLogin = false;
         this.router.navigateByUrl(this.returnUrl);
-
-        let token = (<any>result).token;
-        console.log(result);
-        console.log('Token' + token);
-
       }, error => {
         this.invalidLogin = true;
         if (error.status === 401) {
           this.errorMessage = error.error.loginError;
         } else {
           this.errorMessage = 'Something happen wrong our end. Please try after some time.'
-          console.log(error);
         }
       });
   }

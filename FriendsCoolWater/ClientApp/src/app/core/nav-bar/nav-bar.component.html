@@ -6,35 +6,35 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item link">
                 <a class="nav-link" routerLink="home">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item link">
                 <a class="nav-link" routerLink="aboutUs">About Us</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item link">
                 <a class="nav-link" routerLink="contactUs">Contact Us</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="team">Team</a>
+            <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
+                <a class="nav-link" routerLink="team" *ngIf="LoginStatus">Team</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLink="employee">Employee</a>
+            <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
+                <a class="nav-link" routerLink="employee" *ngIf="LoginStatus">Employee</a>
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" routerLink="/register">Register</a>
+                <li class="nav-item link" *ngIf="!(LoginStatus$ | async) as LoginStatus">
+                    <a class="nav-link" routerLink="/register">Register</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" routerLink="/login">Login</a>
+                <li class="nav-item link" *ngIf="!(LoginStatus$ | async) as LoginStatus">
+                    <a class="nav-link" routerLink="/login" *ngIf="LoginStatus">Login</a>
                 </li>
-                <li class="nav-item active">
-                    <div class="nav-link text-info">{{loggedUserName}}</div>
+                <li class="nav-item" *ngIf="(LoginStatus$ | async) as LoginStatus">
+                    <div class="nav-link text-info login-info" *ngIf="(LoggedUserName$ | async) as Username">Welcome {{Username}}!</div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link btn" (click)="onLogout()">Logout</a>
+                <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
+                    <a class="nav-link btn" (click)="onLogout()" *ngIf="LoginStatus">Logout</a>
                 </li>
             </ul>
         </div>

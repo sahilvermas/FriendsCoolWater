@@ -65,7 +65,6 @@ export class RegisterComponent implements OnInit {
           this.errorList.push(error.error.value[i]);
         }
 
-        console.log(error)
         this.modalMessage = "Your Registration Was Unsuccessful";
         this.modalRef = this.modalService.show(this.modal)
       });
