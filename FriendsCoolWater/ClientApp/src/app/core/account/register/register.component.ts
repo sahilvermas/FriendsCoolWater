@@ -70,6 +70,12 @@ export class RegisterComponent implements OnInit {
       });
   }
 
+  closeModal() {
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+  }
+
   // Custom Validator
   MustMatch(passwordCtrl: AbstractControl): ValidatorFn {
     return (confirmPasswordCtrl: AbstractControl): { [key: string]: boolean } | null => {
