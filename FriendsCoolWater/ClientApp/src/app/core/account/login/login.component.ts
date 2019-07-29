@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   onLogin(): void {
     let formData = this.loginForm.value;
     this.accountService
-      .onLogin(new LoginModel(formData.Username, formData.Password))
+      .Login(new LoginModel(formData.Username, formData.Password))
       .subscribe(result => {
         this.invalidLogin = false;
         this.router.navigateByUrl(this.returnUrl);

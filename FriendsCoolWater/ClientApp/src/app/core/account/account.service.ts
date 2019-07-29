@@ -22,7 +22,7 @@ export class AccountService {
   checkLoginStatus(): boolean { return false; }
 
 
-  onLogin(loginData: LoginModel) {
+  Login(loginData: LoginModel) {
     return this.http
       .post<any>(this.apiUrl.loginUrl, loginData)
       .pipe(
@@ -55,6 +55,18 @@ export class AccountService {
       );
   }
 
+  Register(registerData: RegisterModel) {
+    return this.http
+      .post<any>(this.apiUrl.registerUrl, registerData)
+      .pipe(
+        map(result => {
+          return result;
+        }, error => {
+          return error;
+        })
+      );
+  }
+
   onLogout() {
     // clear all the data from the localStorage
     this.loginStatus.next(false);
@@ -81,10 +93,6 @@ export class AccountService {
   // get the current logged user's role
   get loggedUserRole() {
     return this.userRole.asObservable();
-  }
-
-  onRegister(registerData: RegisterModel) {
-
   }
 
 }

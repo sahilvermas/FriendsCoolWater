@@ -1,29 +1,62 @@
 <div class="row">
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <div class="text-center">
-            <div class="form-signin">
-                <h1 class="h3 mb-3 font-weight-normal">Register new user</h1>
-                <p>
-                    <label for="inputEmail" class="sr-only">Username</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email" required="required" autofocus="" [(ngModel)]="register.email">
-                </p>
-                <p>
-                    <label for="inputUsername" class="sr-only">Username</label>
-                    <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="required" [(ngModel)]="register.username">
-                </p>
-                <p>
-                    <label for="inputPassword" class="sr-only">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="required" [(ngModel)]="register.password">
-                </p>
-                <p>
-                    <label for="inputConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" id="inputConfirmPassword" class="form-control" placeholder="Confirm Password" required="required" [(ngModel)]="register.confirmPassword">
-                </p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="onRegister(register)">Sign up</button>
-                <button class="btn btn-lg btn-secondary btn-block" (click)="onClear(register)">Clear</button>
-            </div>
-        </div>
+
+        <form class="form-signin" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+            <h1 class="h3 mb-3 font-weight-normal">Register new user</h1>
+            <p>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" formControlName="username" class="form-control" placeholder="Username" required autofocus>
+                <small *ngIf="username.touched && username.errors" class="form-text text-danger">
+                        <span *ngIf="username.hasError('required')">UserName is required.</span>
+                        <span *ngIf="username.hasError('maxlength')">Only 10 characters allowed for UserName.</span>
+                        <span *ngIf="username.hasError('minlength')">At least 5 characters needed for UserName.</span>
+                    </small>
+            </p>
+            <p>
+                <label for="password" class="sr-only">Password</label>
+                <input type="password" formControlName="password" class="form-control" placeholder="Password" required>
+                <small *ngIf="password.touched && password.errors" class="form-text text-danger">
+                        <span *ngIf="password.hasError('required')">Password is required.</span>
+                        <span *ngIf="password.hasError('maxlength')">Only 10 characters allowed for password.</span>
+                        <span *ngIf="password.hasError('minlength')">At least 5 characters needed for password.</span>
+                    </small>
+            </p>
+            <p>
+                <label for="confirmPassword" class="sr-only">Confirm Password</label>
+                <input type="password" formControlName="confirmPassword" class="form-control" placeholder="Confirm Password" required>
+                <small *ngIf="confirmPassword.touched && confirmPassword.errors" class="form-text text-danger">
+                        <span *ngIf="confirmPassword.hasError('required')">Confirm Password is required.</span>
+                        <span *ngIf="confirmPassword.hasError('mustMatch')">Password Must Match.</span>
+                    </small>
+            </p>
+            <p>
+                <label for="email" class="sr-only">Email</label>
+                <input type="email" formControlName="email" class="form-control" placeholder="eg: somebody@testmail.com" required>
+                <small *ngIf="email.touched && email.errors" class="form-text text-danger">
+                        <span *ngIf="email.hasError('required')">Email is required.</span>
+                        <span *ngIf="email.hasError('email')">Please provide valid email.</span>
+                    </small>
+            </p>
+            <button class="btn btn-lg btn-primary btn-block" [disabled]="registerForm.invalid" type="submit">Sign up</button>
+        </form>
+
     </div>
     <div class="col-md-4"></div>
 </div>
+
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Friends Cool Water Registration</h4>
+        <button type="button" class="close pull-right" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-center">
+        <p class="list-group-item active">{{modalMessage}}</p>
+        <ul class="list-group" *ngFor="let error of errorList">
+            <li class="list-group-item">{{error}}</li>
+        </ul>
+    </div>
+</ng-template>

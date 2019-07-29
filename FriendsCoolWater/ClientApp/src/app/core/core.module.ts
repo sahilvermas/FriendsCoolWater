@@ -8,11 +8,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { TeamModule } from './team/team.module';
 import { RouterModule } from '@angular/router';
 import { AccountModule } from './account/account.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [NavBarComponent, HomeComponent, PageNotFoundComponent],
   imports: [
-    CommonModule, RouterModule, HttpClientModule, AccountModule, TeamModule, EmployeeModule
+    CommonModule, RouterModule, HttpClientModule, AccountModule, TeamModule, EmployeeModule, ModalModule.forRoot()
   ],
   exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccountModule, TeamModule, EmployeeModule]
 })
