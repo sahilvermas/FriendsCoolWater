@@ -54,7 +54,7 @@ export class AccountService {
             // save the user's role in the localStorage
             this.util.setLocalStorage('userRole', result.userRole);
 
-            this.userName.next(this.util.getLocalStorage('userNames'));
+            this.userName.next(this.util.getLocalStorage('userName'));
 
             this.userRole.next(this.util.getLocalStorage('userRole'));
           }
