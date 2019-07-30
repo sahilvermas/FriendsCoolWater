@@ -86,10 +86,16 @@ namespace FriendsCoolWater.Controllers
 
             if (user != null && await _userManager.CheckPasswordAsync(user, formData.Password))
             {
+                // THen Check If Email Is confirmed
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    ModelState.AddModelError(string.Empty, "User Has not Confirmed Email.");
+                    return Unauthorized(new { LoginError = "We sent you an Confirmation Email. Please Confirm Your Registration With FriendsCoolWater.com To Log in." });
+                }
+
                 var roles = await _userManager.GetRolesAsync(user);
                 var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Secret));
-                var tokenExpiryTime = Convert.ToDouble(_appSettings.ExpireTime);
-                // Confirmation Email :: Do that later
+                var tokenExpiryTime = Convert.ToDouble(_appSettings.ExpireTime);               
 
                 // Generate JWT Token
                 var tokenHandler = new JwtSecurityTokenHandler();
