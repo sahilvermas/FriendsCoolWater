@@ -1,5 +1,7 @@
-﻿using FriendsCoolWater.Helpers;
+﻿using FriendsCoolWater.Email;
+using FriendsCoolWater.Helpers;
 using FriendsCoolWater.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -19,17 +21,18 @@ namespace FriendsCoolWater.Controllers
     {
         private UserManager<IdentityUser> _userManager { get; set; }
         private SignInManager<IdentityUser> _signInManager { get; set; }
-        public object JwtRegisteredClaimName { get; private set; }
-
+        private readonly IEmailSender _emailSender;
         private readonly AppSettings _appSettings;
 
         public AccountController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _appSettings = appSettings.Value;
+            _emailSender = emailSender;
         }
 
         [HttpPost("[action]")]
@@ -51,7 +54,16 @@ namespace FriendsCoolWater.Controllers
                 // Add new user as Customer Role always
                 await _userManager.AddToRoleAsync(user, "Customer");
 
-                // Sending Confirmation Email :: Do that later
+                // Sending Confirmation Email
+                var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                // Create the callback Url for the confirmation email
+                var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                    new { userId = user.Id, confirmationCode = confirmationCode },
+                    protocol: HttpContext.Request.Scheme);
+
+                // Send email to user for confirmation
+                await _emailSender.SendEmailAsync(user.Email, "Techhowdy.com - Confirm Your Email", "Please confirm your e-mail by clicking this link: <a href=\"" + callbackUrl + "\">click here</a>");
 
                 return Ok(new { Username = user.UserName, Email = user.Email, Status = 1, Message = "Registration Successfull" });
             }
@@ -109,6 +121,43 @@ namespace FriendsCoolWater.Controllers
 
             ModelState.AddModelError("", "Username/Password was not found");
             return Unauthorized(new { LoginError = "Please Check Login Credentials - Invalid Username/Password was entered" });
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string confirmationCode)
+        {
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(confirmationCode))
+            {
+                ModelState.AddModelError("", "User Id and Confirmation Code are required");
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return new JsonResult("ERROR");
+            }
+
+            if (user.EmailConfirmed)
+            {
+                return Redirect("/login");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, confirmationCode);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("EmailConfirmed", "Notifications", new { userId, confirmationCode });
+            }
+            else
+            {
+                List<string> errors = new List<string>();
+                foreach (var error in result.Errors)
+                {
+                    errors.Add(error.ToString());
+                }
+                return new JsonResult(errors);
+            }
         }
     }
 }

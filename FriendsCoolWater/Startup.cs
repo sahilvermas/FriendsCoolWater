@@ -1,4 +1,5 @@
 using FriendsCoolWater.Data;
+using FriendsCoolWater.Email;
 using FriendsCoolWater.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,9 @@ namespace FriendsCoolWater
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            // Register SendGrid Email service
+            services.AddSendGridEmailSender();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
