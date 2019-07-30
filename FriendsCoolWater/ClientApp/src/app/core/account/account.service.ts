@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { LoginModel, RegisterModel } from './account-model';
+import { LoginModel, RegisterModel } from './account.model';
 import { ApiUrl } from '../helpers/ApiUrl';
 import { Router } from '@angular/router';
 import { Utility } from '../helpers/Utility';
@@ -85,7 +85,7 @@ export class AccountService {
     this.util.removeLocalStorage('expiration');
     this.util.removeLocalStorage('userRole');
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   // get the current logged user status

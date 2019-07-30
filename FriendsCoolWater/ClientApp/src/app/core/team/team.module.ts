@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListTeamComponent } from './list-team/list-team.component';
-import { ManageTeamComponent } from './manage-team/manage-team.component';
+import { TeamService } from './team.service';
+import { TeamDetailsComponent } from './team-details/team-details.component';
+import { TeamListComponent } from './team-list/team-list.component';
 
 @NgModule({
-  declarations: [ListTeamComponent, ManageTeamComponent],
+  declarations: [TeamListComponent, TeamDetailsComponent, TeamListComponent],
   imports: [
     CommonModule
   ],
-  exports: [ListTeamComponent, ManageTeamComponent]
+  exports: [TeamListComponent, TeamDetailsComponent],
+  providers: [TeamService]
 })
 export class TeamModule { }

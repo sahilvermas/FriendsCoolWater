@@ -47,7 +47,7 @@ namespace FriendsCoolWater.Controllers
         }
 
         [Authorize(Policy = "RequiredAdminRole")]
-        [HttpPost("[action]/{id}")]
+        [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateTeam([FromRoute]int id, [FromBody]TeamModel formData)
         {
             if (!ModelState.IsValid)

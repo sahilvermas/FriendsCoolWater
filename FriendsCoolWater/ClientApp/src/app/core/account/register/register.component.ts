@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, Valid
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { RegisterModel } from '../account-model';
+import { RegisterModel } from '../account.model';
 
 @Component({
   selector: 'app-register',
