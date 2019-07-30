@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { LoginModel, RegisterModel } from './account-model';
 import { ApiUrl } from '../helpers/ApiUrl';
 import { Router } from '@angular/router';
+import { Utility } from '../helpers/Utility';
 
 @Injectable()
 export class AccountService {
@@ -14,12 +15,16 @@ export class AccountService {
   private userName = new BehaviorSubject<string>(localStorage.getItem('userName'));
   private userRole = new BehaviorSubject<string>(localStorage.getItem('userRole'));
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private util: Utility) {
     this.apiUrl = new ApiUrl();
   }
 
   // Set the initial value for loginStatus to => false.
-  checkLoginStatus(): boolean { return false; }
+  checkLoginStatus(): boolean {
+    var loginCookie = this.util.getLocalStorage('loginStatus');
+    if (loginCookie == '1') return true;
+    return false;
+  }
 
 
   Login(loginData: LoginModel) {
@@ -35,19 +40,23 @@ export class AccountService {
             this.loginStatus.next(true);
 
             // save the loginStatus in the localStorage
-            localStorage.setItem('loginStatus', '1');
+            this.util.setLocalStorage('loginStatus', '1');
 
             // save the Jwt Token in the localStorage
-            localStorage.setItem('JwtToken', result.token);
+            this.util.setLocalStorage('JwtToken', result.token);
 
             // save the username in the localStorage
-            localStorage.setItem('userName', result.userName);
+            this.util.setLocalStorage('userName', result.userName);
 
             // save the token expiration time in the localStorage
-            localStorage.setItem('expiration', result.expiration);
+            this.util.setLocalStorage('expiration', result.expiration);
 
             // save the user's role in the localStorage
-            localStorage.setItem('userRole', result.userRole);
+            this.util.setLocalStorage('userRole', result.userRole);
+
+            this.userName.next(this.util.getLocalStorage('userNames'));
+
+            this.userRole.next(this.util.getLocalStorage('userRole'));
           }
 
           return result;
@@ -70,11 +79,11 @@ export class AccountService {
   onLogout() {
     // clear all the data from the localStorage
     this.loginStatus.next(false);
-    localStorage.setItem('loginStatus', '0');
-    localStorage.removeItem('JwtToken');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('expiration');
-    localStorage.removeItem('userRole');
+    this.util.setLocalStorage('loginStatus', '0');
+    this.util.removeLocalStorage('JwtToken');
+    this.util.removeLocalStorage('userName');
+    this.util.removeLocalStorage('expiration');
+    this.util.removeLocalStorage('userRole');
 
     this.router.navigate(['/login']);
   }

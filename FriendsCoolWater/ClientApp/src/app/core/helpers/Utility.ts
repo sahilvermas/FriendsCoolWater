@@ -7,4 +7,8 @@ export class Utility {
     setLocalStorage(key: string, value: string) {
         localStorage.setItem(key, value);
     }
+
+    removeLocalStorage(key) {
+        localStorage.removeItem(key);
+    }
 }
