@@ -4,6 +4,7 @@ import { PageNotFoundComponent } from '../page-not-found/page-not-found.componen
 import { LoginComponent } from '../account/login/login.component';
 import { RegisterComponent } from '../account/register/register.component';
 import { TeamModule } from '../team/team.module';
+import { AccessDeniedComponent } from '../errors/access-denied/access-denied.component';
 
 export const RoutePaths: Routes = [
     { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const RoutePaths: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'home', component: HomeComponent, pathMatch: 'full' },
     { path: 'team', loadChildren: () => TeamModule },
+    { path: 'access-denied', component: AccessDeniedComponent },
     { path: '**', component: PageNotFoundComponent }
 ];

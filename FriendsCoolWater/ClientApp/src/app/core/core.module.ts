@@ -9,12 +9,13 @@ import { TeamModule } from './team/team.module';
 import { RouterModule } from '@angular/router';
 import { AccountModule } from './account/account.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { AccessDeniedComponent } from './errors/access-denied/access-denied.component';
 
 @NgModule({
-  declarations: [NavBarComponent, HomeComponent, PageNotFoundComponent],
+  declarations: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccessDeniedComponent, AccessDeniedComponent],
   imports: [
     CommonModule, RouterModule, HttpClientModule, AccountModule, TeamModule, EmployeeModule, ModalModule.forRoot()
   ],
-  exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccountModule, TeamModule, EmployeeModule]
+  exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccessDeniedComponent, AccountModule, TeamModule, EmployeeModule]
 })
 export class CoreModule { }
