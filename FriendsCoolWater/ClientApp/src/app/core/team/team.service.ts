@@ -16,7 +16,7 @@ export class TeamService {
   }
 
   getTeams(): Observable<Team[]> {
-    if (this.teams$) {
+    if (!this.teams$) {
       // shareReplay will get the data from the browser cache if any
       this.teams$ = this.http.get<Team[]>(this.apiUrl.getTeamsUrl).pipe(shareReplay());
     }

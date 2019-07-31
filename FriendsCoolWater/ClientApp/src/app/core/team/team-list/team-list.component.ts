@@ -170,6 +170,10 @@ export class TeamListComponent implements OnInit, OnDestroy {
       this.chRef.detectChanges();
 
       this.dtTrigger.next();
+    }, error => {
+      if (error.status === 401) {
+        console.log('Unauthorized Access');
+      }
     });
 
     this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result });
