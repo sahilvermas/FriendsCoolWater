@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { TeamService } from './team.service';
 import { TeamDetailsComponent } from './team-details/team-details.component';
 import { TeamListComponent } from './team-list/team-list.component';
+import { TeamRoutingModule } from './team-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataTablesModule } from 'angular-datatables';
 
 @NgModule({
-  declarations: [TeamListComponent, TeamDetailsComponent, TeamListComponent],
-  imports: [
-    CommonModule
-  ],
+  declarations: [TeamListComponent, TeamDetailsComponent],
+  imports: [CommonModule, TeamRoutingModule, FormsModule, ReactiveFormsModule, DataTablesModule],
   exports: [TeamListComponent, TeamDetailsComponent],
   providers: [TeamService]
 })

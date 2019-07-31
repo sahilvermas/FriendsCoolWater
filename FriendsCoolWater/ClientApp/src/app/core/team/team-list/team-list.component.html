@@ -1,4 +1,157 @@
 <div class="container-fluid">
 
-  <h3>Team List</h3>
+    <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddTeam()"><i class="fa fa-plus"></i> Add Team</button>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
+        <thead class="text-center thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let team of teams" class="text-center">
+                <td>{{team.id}}</td>
+                <td>{{team.name | uppercase}}</td>
+                <td>{{team.description}}</td>
+                <td>{{true == team.active ? 'No ': 'Yes '}}</td>
+                <td>
+                    <div class="btn-group mt-2" role="group">
+                        <button type="button" class="btn btn-success" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
+                        <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(team)"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<!-- ADD TEAM MODAL START-->
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title">ADD NEW TEAM</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body text-center">
+        <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+        <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="teamTitle"><i class="fa fa-pencil-square-o"></i></span>
+                        </div>
+                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
+                    </div>
+                    <div class="errorMessage" *ngIf="name.touched && name.errors">
+                        <span *ngIf="name.hasError('required')">Team Name is required.</span>
+                        <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="teamDescription"><i class="fa fa-pencil-square-o"></i></span>
+                        </div>
+                        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
+                    </div>
+                    <div class="errorMessage" *ngIf="description.touched && description.errors">
+                        <span *ngIf="description.hasError('required')">Team Description is required.</span>
+                        <span *ngIf="description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" formControlName="active" checked aria-label="Checkbox for following text input">
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Team Active" disabled>
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <button [disabled]="insertForm.invalid" class="btn btn-primary btn-block">ADD</button>
+                </li>
+            </ul>
+
+        </form>
+
+    </div>
+</ng-template>
+
+<!-- ADD TEAM MODAL START-->
+
+
+
+<!-- EDIT TEAM MODAL START-->
+
+<ng-template #editTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">EDIT TEAM DETAILS</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body text-center">
+        <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+        <form [formGroup]="updateForm" (ngSubmit)="onUpdateTeam()">
+            <ul class="list-group">
+                <li class="list-group-item" [hidden]="_id">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="teamId"><i class="fa fa-key"></i></span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="id" />
+                    </div>
+
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="teamTitle"><i class="fa fa-pencil-square-o"></i></span>
+                        </div>
+                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
+                    </div>
+                    <div *ngIf="_name.touched && _name.errors" class="errorMessage">
+                        <span *ngIf="_name.hasError('required')">Team Name is required.</span>
+                        <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="teamDescription"><i class="fa fa-pencil-square-o"></i></span>
+                        </div>
+                        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
+                    </div>
+                    <div *ngIf="_description.touched && _description.errors" class="errorMessage">
+                        <span *ngIf="_description.hasError('required')">Team Description is required.</span>
+                        <span *ngIf="_description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" formControlName="active" checked aria-label="Checkbox for following text input">
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Team is Active" disabled>
+                    </div>
+                </li>
+
+            </ul>
+
+        </form>
+
+    </div>
+</ng-template>
+
+<!-- EDIT TEAM MODAL END-->

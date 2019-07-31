@@ -3,7 +3,7 @@ export class ApiUrl {
     public loginUrl: string = `${this.baseUrl}account/login`;
     public registerUrl: string = `${this.baseUrl}account/register`;
 
-    public getTeamsUrl: string = `${this.baseUrl}team/getTeams/`;
+    public getTeamsUrl: string = `${this.baseUrl}team/getTeams`;
     public getTeamByIdUrl: string = `${this.baseUrl}team/getTeam/`;
     public addTeamUrl: string = `${this.baseUrl}team/addTeam/`;
     public updateTeamUrl: string = `${this.baseUrl}team/updateTeam/`;

@@ -63,7 +63,7 @@ namespace FriendsCoolWater.Controllers
                     protocol: HttpContext.Request.Scheme);
 
                 // Send email to user for confirmation
-                await _emailSender.SendEmailAsync(user.Email, "Techhowdy.com - Confirm Your Email", "Please confirm your e-mail by clicking this link: <a href=\"" + callbackUrl + "\">click here</a>");
+                await _emailSender.SendEmailAsync(user.Email, "FriendsCoolWater.com - Confirm Your Email", "Please confirm your e-mail by clicking this link: <a href=\"" + callbackUrl + "\">click here</a>");
 
                 return Ok(new { Username = user.UserName, Email = user.Email, Status = 1, Message = "Registration Successfull" });
             }
