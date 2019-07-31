@@ -10,12 +10,14 @@ import { RouterModule } from '@angular/router';
 import { AccountModule } from './account/account.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccessDeniedComponent } from './errors/access-denied/access-denied.component';
+import { AuthGuardService } from './guards/auth-guard.service';
 
 @NgModule({
   declarations: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccessDeniedComponent, AccessDeniedComponent],
   imports: [
     CommonModule, RouterModule, HttpClientModule, AccountModule, TeamModule, EmployeeModule, ModalModule.forRoot()
   ],
-  exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccessDeniedComponent, AccountModule, TeamModule, EmployeeModule]
+  exports: [NavBarComponent, HomeComponent, PageNotFoundComponent, AccessDeniedComponent, AccountModule, TeamModule, EmployeeModule],
+  providers: [AuthGuardService]
 })
 export class CoreModule { }

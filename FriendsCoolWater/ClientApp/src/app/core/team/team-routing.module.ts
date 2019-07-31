@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TeamListComponent } from './team-list/team-list.component';
 import { TeamDetailsComponent } from './team-details/team-details.component';
+import { AuthGuardService } from '../guards/auth-guard.service';
 
 
 const routes: Routes = [
-    { path: '', component: TeamListComponent },
-    { path: 'team-list', component: TeamListComponent },
-    { path: ':id', component: TeamDetailsComponent },
+    { path: '', component: TeamListComponent, canActivate: [AuthGuardService] },
+    { path: 'team-list', component: TeamListComponent, canActivate: [AuthGuardService] },
+    { path: ':id', component: TeamDetailsComponent, canActivate: [AuthGuardService] },
 ];
 
 @NgModule({
