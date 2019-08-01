@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ApiUrl } from '../helpers/ApiUrl';
+import { ApiUrl } from '../helpers/apiUrl';
 import { Observable } from 'rxjs';
 import { Team } from './team.Model';
 import { shareReplay, flatMap, first } from 'rxjs/operators';

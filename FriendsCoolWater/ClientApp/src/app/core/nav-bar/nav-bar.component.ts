@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account/account.service';
-import { Utility } from '../helpers/Utility';
+import { Utility } from '../helpers/utility';
 import { Observable } from 'rxjs';
 import { TeamService } from '../team/team.service';
 

@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LoginModel, RegisterModel } from './account.model';
-import { ApiUrl } from '../helpers/ApiUrl';
+import { ApiUrl } from '../helpers/apiUrl';
 import { Router } from '@angular/router';
-import { Utility } from '../helpers/Utility';
+import { Utility } from '../helpers/utility';
 
 @Injectable()
 export class AccountService {

@@ -151,7 +151,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
   onSelect(team: Team): void {
     this.selectedTeam = team;
 
-    this.router.navigateByUrl("/teams/" + team.id);
+    this.router.navigateByUrl("/team/" + team.id);
   }
 
   ngOnInit() {

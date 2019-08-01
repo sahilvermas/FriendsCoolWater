@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AccountService } from '../account/account.service';
-import { Utility } from '../helpers/Utility';
+import { Utility } from '../helpers/utility';
 import { take, map } from 'rxjs/operators';
 
 @Injectable({

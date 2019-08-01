@@ -6,6 +6,8 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { TeamRoutingModule } from './team-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from '../helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [TeamListComponent, TeamDetailsComponent],
