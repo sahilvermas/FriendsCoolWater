@@ -6,6 +6,7 @@ import { LoginModel, RegisterModel } from './account.model';
 import { ApiUrl } from '../helpers/apiUrl';
 import { Router } from '@angular/router';
 import { Utility } from '../helpers/utility';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable()
 export class AccountService {
@@ -21,8 +22,26 @@ export class AccountService {
 
   // Set the initial value for loginStatus to => false.
   checkLoginStatus(): boolean {
+
     var loginCookie = this.util.getLocalStorage('loginStatus');
-    if (loginCookie == '1') return true;
+    if (loginCookie == '1') {
+
+      const token = this.util.getLocalStorage('JwtToken');
+
+      if (token === null || token === undefined)
+        return false;
+
+      const decodedToken = jwt_decode(token);
+
+      if (decodedToken.exp === undefined)
+        return false;
+
+      const date = new Date(0);
+      // convert the token exp time to UTC
+      let tokenExpDate = date.setUTCSeconds(decodedToken.exp);
+      if (tokenExpDate.valueOf() > new Date().valueOf())
+        return true;
+    };
     return false;
   }
 
