@@ -13,3 +13,39 @@
     margin-top: 2px;
     font-weight: bold;
 }
+
+.error {
+    color: red !important;
+    font-size: 12px;
+}
+
+.btn-space {
+    margin-right: 5px;
+}
+
+input[type="search"],
+select {
+    border: solid 1px #b2b2b2;
+    padding: 4px 6px;
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+    padding: 3px 0px 3px 10px;
+    vertical-align: middle;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.paging_full_numbers,
+.dataTables_info {
+    font-size: 12px;
+}
+
+table thead th,
+table tbody td {
+    height: 5px !important;
+    padding: 7px 10px !important;
+}

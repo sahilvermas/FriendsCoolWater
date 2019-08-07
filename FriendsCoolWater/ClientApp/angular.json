@@ -24,7 +24,7 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "./node_modules/bootstrap/dist/css/bootstrap-united.min.css",
+                            "./node_modules/bootstrap/dist/css/bootstrap-simplex.min.css",
                             "./node_modules/datatables.net-dt/css/jquery.dataTables.css",
                             "src/styles.css"
                         ],

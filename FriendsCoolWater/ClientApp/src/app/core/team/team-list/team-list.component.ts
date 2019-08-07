@@ -56,7 +56,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   /// Load Add New Team Modal
   onAddTeam() {
-    this.modalRef = this.modalService.show(this.modal);
+    this.modalRef = this.modalService.show(this.modal, { class: 'modal-md', backdrop: 'static', keyboard: false });
   }
 
   // Method to Add new Team
@@ -131,21 +131,27 @@ export class TeamListComponent implements OnInit, OnDestroy {
       'active': this._active.value
     });
 
-    this.modalRef = this.modalService.show(this.editmodal);
+    this.modalRef = this.modalService.show(this.editmodal, { class: 'modal-md', backdrop: 'static', keyboard: false });
 
   }
 
   // Method to Delete the team
   onDelete(team: Team): void {
-    this.teamService.deleteTeam(team.id).subscribe(result => {
-      this.teamService.clearCache();
-      this.teams$ = this.teamService.getTeams();
-      this.teams$.subscribe(newlist => {
-        this.teams = newlist;
 
-        this.rerender();
+    var isDelete = confirm(`Do you want to delete '${team.name}' team?`);
+    if (isDelete) {
+
+      this.teamService.deleteTeam(team.id).subscribe(result => {
+        this.teamService.clearCache();
+        this.teams$ = this.teamService.getTeams();
+        this.teams$.subscribe(newlist => {
+          this.teams = newlist;
+
+          this.rerender();
+        })
       })
-    })
+
+    }
   }
 
   onSelect(team: Team): void {

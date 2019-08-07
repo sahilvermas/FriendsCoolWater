@@ -12,13 +12,17 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AccessDeniedComponent } from './errors/access-denied/access-denied.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
 
 @NgModule({
   declarations: [
     NavBarComponent,
     HomeComponent,
     PageNotFoundComponent,
-    AccessDeniedComponent],
+    AccessDeniedComponent,
+    AboutUsComponent,
+    ContactUsComponent],
   imports: [
     CommonModule,
     RouterModule,

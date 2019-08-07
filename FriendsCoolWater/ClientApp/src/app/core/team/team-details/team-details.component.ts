@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from '../../account/account.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-team-details',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamDetailsComponent implements OnInit {
 
-  constructor() { }
+  userRoleStatus: string;
+
+  constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result });
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log(id);
   }
 
 }

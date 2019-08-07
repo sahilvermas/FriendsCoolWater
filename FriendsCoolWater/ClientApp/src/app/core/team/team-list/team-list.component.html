@@ -1,8 +1,16 @@
 <div class="container-fluid">
 
-    <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddTeam()"><i class="fa fa-plus"></i> Add Team</button>
-    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered row-border hover" style="width:100%">
-        <thead class="text-center thead-dark">
+    <div class="row">
+        <div class="col-md-9">
+            <h3>Manage Teams</h3>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-warning mb-3 float-right text-uppercase" *ngIf="userRoleStatus == 'Admin'" (click)="onAddTeam()"><i class="fa fa-plus"></i> Add Team</button>
+
+        </div>
+    </div>
+    <table class="table table-striped table-condensed table-hover" style="width:100%">
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Name</th>
@@ -12,16 +20,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let team of teams" class="text-center">
+            <tr *ngFor="let team of teams">
                 <td>{{team.id}}</td>
-                <td>{{team.name | uppercase}}</td>
+                <td>{{team.name}}</td>
                 <td>{{team.description}}</td>
-                <td>{{true == team.active ? 'No ': 'Yes '}}</td>
+                <td>{{true == team.active ? 'Yes ': 'No '}}</td>
                 <td>
-                    <div class="btn-group mt-2" role="group">
-                        <button type="button" class="btn btn-success" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
-                        <button type="button" class="btn btn-primary" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(team)"><i class="fas fa-trash"></i></button>
+                    <div class="mt-4 no-margin" role="group">
+                        <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(team)"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -32,54 +40,45 @@
 <!-- ADD TEAM MODAL START-->
 <ng-template #template>
     <div class="modal-header">
-        <h4 class="modal-title">ADD NEW TEAM</h4>
+        <h4 class="modal-title">Add New Team</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
     </div>
-    <div class="modal-body text-center">
-        <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+    <div class="modal-body">
+        <p class="text-info">{{modalMessage}}</p>
         <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="teamTitle"><i class="fa fa-pencil-square-o"></i></span>
-                        </div>
-                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
-                    </div>
-                    <div class="errorMessage" *ngIf="name.touched && name.errors">
-                        <span *ngIf="name.hasError('required')">Team Name is required.</span>
-                        <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="teamDescription"><i class="fa fa-pencil-square-o"></i></span>
-                        </div>
-                        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
-                    </div>
-                    <div class="errorMessage" *ngIf="description.touched && description.errors">
-                        <span *ngIf="description.hasError('required')">Team Description is required.</span>
-                        <span *ngIf="description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <input type="checkbox" formControlName="active" checked aria-label="Checkbox for following text input">
-                            </div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Team Active" disabled>
-                    </div>
-                </li>
 
-                <li class="list-group-item">
-                    <button [disabled]="insertForm.invalid" class="btn btn-primary btn-block">ADD</button>
-                </li>
-            </ul>
+            <div class="form-group">
+                <label for="name">Team Name</label>
+                <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
+                <div *ngIf="name.touched && name.errors" class="form-text text-muted error">
+                    <span *ngIf="name.hasError('required')">Team Name is required.</span>
+                    <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Team Name</label>
+                <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
+                <div *ngIf="description.touched && description.errors" class="form-text text-muted error">
+                    <span *ngIf="description.hasError('required')">Team Description is required.</span>
+                    <span *ngIf="description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" id="chkActive" formControlName="active" checked aria-label="Checkbox for following text input" class="custom-control-input">
+                    <label class="custom-control-label" for="chkActive">Team Active</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" [disabled]="insertForm.invalid" class="btn btn-success btn-space">Submit</button>
+                <button type="button" (click)="modalRef.hide()" class="btn btn-primary">Cancel</button>
+            </div>
 
         </form>
 
@@ -94,60 +93,55 @@
 
 <ng-template #editTemplate>
     <div class="modal-header">
-        <h4 class="modal-title">EDIT TEAM DETAILS</h4>
+        <h4 class="modal-title">Edit Team Details</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
     </div>
-    <div class="modal-body text-center">
-        <p class="list-group-item active text-center text-uppercase">{{modalMessage}}</p>
+    <div class="modal-body">
+        <p class="text-info">{{modalMessage}}</p>
         <form [formGroup]="updateForm" (ngSubmit)="onUpdateTeam()">
-            <ul class="list-group">
-                <li class="list-group-item" [hidden]="_id">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="teamId"><i class="fa fa-key"></i></span>
-                        </div>
-                        <input type="text" class="form-control" formControlName="id" />
-                    </div>
 
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="teamTitle"><i class="fa fa-pencil-square-o"></i></span>
-                        </div>
-                        <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
+            <div class="list-group-item" [hidden]="_id">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="teamId"><i class="fa fa-key"></i></span>
                     </div>
-                    <div *ngIf="_name.touched && _name.errors" class="errorMessage">
-                        <span *ngIf="_name.hasError('required')">Team Name is required.</span>
-                        <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="teamDescription"><i class="fa fa-pencil-square-o"></i></span>
-                        </div>
-                        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
-                    </div>
-                    <div *ngIf="_description.touched && _description.errors" class="errorMessage">
-                        <span *ngIf="_description.hasError('required')">Team Description is required.</span>
-                        <span *ngIf="_description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <input type="checkbox" formControlName="active" checked aria-label="Checkbox for following text input">
-                            </div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Team is Active" disabled>
-                    </div>
-                </li>
+                    <input type="text" class="form-control" formControlName="id" />
+                </div>
 
-            </ul>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Team Name</label>
+                <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
+                <div *ngIf="_name.touched && _name.errors" class="form-text text-muted error">
+                    <span *ngIf="_name.hasError('required')">Team Name is required.</span>
+                    <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Team Name</label>
+                <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 150 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
+                <div *ngIf="_description.touched && _description.errors" class="form-text text-muted error">
+                    <span *ngIf="_description.hasError('required')">Team Description is required.</span>
+                    <span *ngIf="_description.hasError('maxlength')">Only 150 characters allowed for Team Description.</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" id="chkActive" formControlName="active" checked aria-label="Checkbox for following text input" class="custom-control-input">
+                    <label class="custom-control-label" for="chkActive">Team Active</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" [disabled]="updateForm.invalid" class="btn btn-success btn-space">Submit</button>
+                <button type="button" (click)="modalRef.hide()" class="btn btn-primary">Cancel</button>
+            </div>
 
         </form>
 
