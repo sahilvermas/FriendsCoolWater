@@ -6,13 +6,14 @@ import { TeamService } from '../team/team.service';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { EmployeeService } from './employee.service';
 
 
 
 @NgModule({
   declarations: [EmployeeListComponent, EmployeeDetailsComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, DataTablesModule],
-  exports: [EmployeeRoutingModule, EmployeeListComponent, EmployeeDetailsComponent],
-  providers: [TeamService]
+  imports: [CommonModule, EmployeeRoutingModule, FormsModule, ReactiveFormsModule, DataTablesModule],
+  exports: [EmployeeListComponent, EmployeeDetailsComponent],
+  providers: [TeamService, EmployeeService]
 })
 export class EmployeeModule { }

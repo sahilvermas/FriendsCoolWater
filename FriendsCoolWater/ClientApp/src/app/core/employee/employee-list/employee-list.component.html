@@ -1,1 +1,117 @@
-<p>employee-list works!</p>
+<div class="container-fluid">
+
+    <div class="row header">
+        <div class="col-md-10 col-sm-10 col-8">
+            <h4>Employees</h4>
+        </div>
+        <div class="col-md-2 col-sm-2 col-4">
+            <button class="btn btn-primary btn-sm float-right" *ngIf="userRoleStatus == 'Admin'" (click)="onAddEmployee()"><i class="fa fa-plus"></i> Add</button>
+        </div>
+    </div>
+
+    <table class="table table-striped table-condensed table-hover" style="width:100%">
+        <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Team Name</th>
+                <th>Employee Name</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let emp of employees">
+                <td>{{emp.id}}</td>
+                <td><strong>{{emp.teamName}}</strong></td>
+                <td>{{emp.firstName + ' ' + emp.lastName}}</td>
+                <td>{{true == emp.active ? 'Yes ': 'No '}}</td>
+                <td>
+                    <div class="mt-4 no-margin" role="group">
+                        <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(emp)"><i class="fas fa-list"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(emp)"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(emp)"><i class="fas fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<!-- ADD EMPLOYEE MODAL START-->
+<ng-template #empManageTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">{{isNewEntry ? 'Add New Employee': 'Update Employee'}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-info">{{modalMessage}}</p>
+        <form [formGroup]="empForm" (ngSubmit)="empForm.valid && onSubmitEmployee()">
+
+            <div class="form-group">
+                <label for="teamId">Select Team</label>
+                <select class="form-control" formControlName="teamId">
+                    <option value="-1" selected>Select</option>
+                    <option *ngFor="let team of teams" [ngValue]="team.id">{{team.name}}</option>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" formControlName="firstName" class="form-control">
+                <div *ngIf="empForm.get('firstName').touched && empForm.get('firstName').invalid" class="form-text text-muted error">
+                    <span *ngIf="empForm.get('firstName').errors.required">First name is required.</span>
+                    <span *ngIf="empForm.get('firstName').errors.maxlength">Only 30 characters allowed for first name.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lName">Last Name</label>
+                <input type="text" formControlName="lastName" class="form-control">
+                <div *ngIf="empForm.get('lastName').touched && empForm.get('lastName').invalid" class="form-text text-muted error">
+                    <span *ngIf="empForm.get('lastName').errors.maxlength">Only 30 characters allowed for last name.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" id="chkActive" formControlName="active" checked aria-label="Checkbox for following text input" class="custom-control-input">
+                    <label class="custom-control-label" for="chkActive">Employee Active</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" [disabled]="empForm.invalid" class="btn btn-success btn-space">Submit</button>
+                <button type="button" (click)="modalRef.hide()" class="btn btn-primary">Cancel</button>
+            </div>
+
+        </form>
+
+    </div>
+</ng-template>
+
+<!-- ADD EMPLOYEE MODAL START-->
+
+
+<!-- DELETE EMPLOYEE MODAL START-->
+<ng-template #empDelTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body text-danger">
+        <h4>Are you confirm to delete the employee?</h4>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onDelete()">Yes</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide()">No</button>
+    </div>
+</ng-template>
+
+<!-- DELETE EMPLOYEE MODAL START-->

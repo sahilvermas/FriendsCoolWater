@@ -1,11 +1,18 @@
 export class ApiUrl {
-    private baseUrl: string = 'https://localhost:44302/api/';
-    public loginUrl: string = `${this.baseUrl}account/login`;
-    public registerUrl: string = `${this.baseUrl}account/register`;
+    private baseUrl = 'https://localhost:44302/api/';
+    public loginUrl = `${this.baseUrl}account/login`;
+    public registerUrl = `${this.baseUrl}account/register`;
 
-    public getTeamsUrl: string = `${this.baseUrl}team/getTeams`;
-    public getTeamByIdUrl: string = `${this.baseUrl}team/getTeam/`;
-    public addTeamUrl: string = `${this.baseUrl}team/addTeam/`;
-    public updateTeamUrl: string = `${this.baseUrl}team/updateTeam/`;
-    public deleteTeamUrl: string = `${this.baseUrl}team/deleteTeam/`;
+    public getTeamsUrl = `${this.baseUrl}team/getTeams`;
+    public getTeamByIdUrl = `${this.baseUrl}team/getTeam/`;
+    public addTeamUrl = `${this.baseUrl}team/addTeam/`;
+    public updateTeamUrl = `${this.baseUrl}team/updateTeam/`;
+    public deleteTeamUrl = `${this.baseUrl}team/deleteTeam/`;
+
+    public getEmployeesUrl = `${this.baseUrl}employee/getEmployees`;
+    public getEmployeeByIdUrl = `${this.baseUrl}employee/getEmployee/`;
+    public getEmployeeByTeamIdUrl = `${this.baseUrl}employee/getEmployeesByTeamId/`;
+    public addEmployeeUrl = `${this.baseUrl}employee/addEmployee/`;
+    public updateEmployeeUrl = `${this.baseUrl}employee/updateEmployee/`;
+    public deleteEmployeeUrl = `${this.baseUrl}employee/deleteEmployee/`;
 }

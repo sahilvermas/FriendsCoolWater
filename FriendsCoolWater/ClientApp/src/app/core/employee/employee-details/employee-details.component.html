@@ -1,1 +1,40 @@
-<p>employee-details works!</p>
+<div class="container-fluid">
+
+    <div class="row header">
+        <div class="col-md-10 col-sm-10 col-8">
+            <h4>Employee Details</h4>
+        </div>
+        <div class="col-md-2 col-sm-2 col-4">
+            <a class="btn btn-primary btn-sm float-right" routerLink="/employee"><i class="fa fa-backward"></i> Back</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-12">
+            <table class="table table-bordered table-sm table-striped">
+                <tbody>
+                    <tr>
+                        <td>Employee Id</td>
+                        <td>{{employee.id}}</td>
+                    </tr>
+                    <tr>
+                        <td>Team Id</td>
+                        <td>{{employee.teamId}}</td>
+                    </tr>
+                    <tr>
+                        <td>Team Name</td>
+                        <td><strong>{{employee.teamName}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Full Name</td>
+                        <td>{{employee.firstName + ' '+ employee.lastName }}</td>
+                    </tr>
+                    <tr>
+                        <td>Active</td>
+                        <td [ngClass]="{'text-success': employee.active, 'text-danger': !employee.active}">{{employee.active ? 'Yes': 'No'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

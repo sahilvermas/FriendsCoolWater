@@ -2,7 +2,16 @@
 
 @import "~@fortawesome/fontawesome-free/css/all.css";
 .body-wrapper {
-    margin-top: 20px
+    margin-top: 2px
+}
+
+.btn-default {
+    border: solid 2px #ddd;
+    background: #eee;
+}
+
+.header {
+    margin: 15px 0;
 }
 
 .link {
@@ -37,6 +46,10 @@ table.dataTable tbody td {
 
 .no-margin {
     margin: 0 !important;
+}
+
+.h-margin {
+    margin-top: 10px;
 }
 
 .paging_full_numbers,

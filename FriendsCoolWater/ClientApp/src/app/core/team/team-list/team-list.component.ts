@@ -47,7 +47,8 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
 
-  constructor(private teamService: TeamService,
+  constructor(
+    private teamService: TeamService,
     private modalService: BsModalService,
     private fb: FormBuilder,
     private chRef: ChangeDetectorRef,
@@ -61,7 +62,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   // Method to Add new Team
   onSubmit() {
-    let newTeam = this.insertForm.value;
+    const newTeam = this.insertForm.value;
 
     this.teamService.addTeam(newTeam).subscribe(
       result => {
@@ -72,20 +73,20 @@ export class TeamListComponent implements OnInit, OnDestroy {
           this.teams = newlist;
           this.modalRef.hide();
           this.insertForm.reset();
-          this.rerender();
+          // Not using datatables on this page, so commenting code.
+          // this.rerender();
 
         });
-        console.log("New Team added");
+        console.log('New Team added');
 
       },
       error => console.log('Could not add Team')
 
-    )
+    );
 
   }
 
   // We will use this method to destroy old table and re-render new table
-
   rerender() {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       // Destroy the table first in the current context
@@ -99,7 +100,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   // Update an Existing Team
   onUpdateTeam() {
-    let editTeam = this.updateForm.value;
+    const editTeam = this.updateForm.value;
     this.teamService.updateTeam(editTeam.id, editTeam).subscribe(
       result => {
         console.log('Team Updated');
@@ -109,15 +110,14 @@ export class TeamListComponent implements OnInit, OnDestroy {
           this.teams = updatedlist;
 
           this.modalRef.hide();
-          this.rerender();
+          //this.rerender();
         });
       },
       error => console.log('Could Not Update Team')
-    )
+    );
   }
 
   // Load the update Modal
-
   onUpdateModal(teamEdit: Team): void {
     this._id.setValue(teamEdit.id);
     this._name.setValue(teamEdit.name);
@@ -125,10 +125,10 @@ export class TeamListComponent implements OnInit, OnDestroy {
     this._active.setValue(teamEdit.active);
 
     this.updateForm.setValue({
-      'id': this._id.value,
-      'name': this._name.value,
-      'description': this._description.value,
-      'active': this._active.value
+      id: this._id.value,
+      name: this._name.value,
+      description: this._description.value,
+      active: this._active.value
     });
 
     this.modalRef = this.modalService.show(this.editmodal, { class: 'modal-md', backdrop: 'static', keyboard: false });
@@ -138,7 +138,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
   // Method to Delete the team
   onDelete(team: Team): void {
 
-    var isDelete = confirm(`Do you want to delete '${team.name}' team?`);
+    const isDelete = confirm(`Do you want to delete '${team.name}' team?`);
     if (isDelete) {
 
       this.teamService.deleteTeam(team.id).subscribe(result => {
@@ -147,9 +147,9 @@ export class TeamListComponent implements OnInit, OnDestroy {
         this.teams$.subscribe(newlist => {
           this.teams = newlist;
 
-          this.rerender();
-        })
-      })
+          //this.rerender();
+        });
+      });
 
     }
   }
@@ -157,10 +157,11 @@ export class TeamListComponent implements OnInit, OnDestroy {
   onSelect(team: Team): void {
     this.selectedTeam = team;
 
-    this.router.navigateByUrl("/team/" + team.id);
+    this.router.navigateByUrl('/team/' + team.id);
   }
 
   ngOnInit() {
+
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 9,
@@ -169,6 +170,35 @@ export class TeamListComponent implements OnInit, OnDestroy {
     };
 
     this.teams$ = this.teamService.getTeams();
+    this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result; });
+
+    // Modal Message
+    this.modalMessage = 'All Fields Are Mandatory';
+
+    // Initializing Add team properties
+    this.name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
+    this.description = new FormControl('', Validators.maxLength(100));
+    this.active = new FormControl('', [Validators.required]);
+
+    this.insertForm = this.fb.group({
+      name: this.name,
+      description: this.description,
+      active: this.active
+    });
+
+    // Initializing Update Team properties
+    this._name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
+    this._description = new FormControl('', Validators.maxLength(100));
+    this._active = new FormControl('', [Validators.required]);
+    this._id = new FormControl();
+
+    this.updateForm = this.fb.group(
+      {
+        id: this._id,
+        name: this._name,
+        description: this._description,
+        active: this._active
+      });
 
     this.teams$.subscribe(result => {
       this.teams = result;
@@ -181,40 +211,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
         console.log('Unauthorized Access');
       }
     });
-
-    this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result });
-
-
-    // Modal Message
-    this.modalMessage = "All Fields Are Mandatory";
-
-    // Initializing Add team properties
-
-    this.name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
-    this.description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
-    this.active = new FormControl('', [Validators.required]);
-
-    this.insertForm = this.fb.group({
-
-      'name': this.name,
-      'description': this.description,
-      'active': this.active
-    });
-
-    // Initializing Update Team properties
-    this._name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
-    this._description = new FormControl('', [Validators.required, Validators.maxLength(150)]);
-    this._active = new FormControl('', [Validators.required]);
-    this._id = new FormControl();
-
-    this.updateForm = this.fb.group(
-      {
-        'id': this._id,
-        'name': this._name,
-        'description': this._description,
-        'active': this._active
-      });
-
 
   }
 

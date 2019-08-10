@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../account/account.service';
 import { ActivatedRoute } from '@angular/router';
+import { TeamService } from '../team.service';
+import { Team } from '../team.Model';
 
 @Component({
   selector: 'app-team-details',
@@ -10,13 +12,30 @@ import { ActivatedRoute } from '@angular/router';
 export class TeamDetailsComponent implements OnInit {
 
   userRoleStatus: string;
+  team: Team;
 
-  constructor(private accountService: AccountService, private route: ActivatedRoute) { }
+  constructor(
+    private accountService: AccountService,
+    private route: ActivatedRoute,
+    private teamService: TeamService) { }
 
   ngOnInit() {
-    this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result });
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log(id);
+    this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result; });
+    const teamId = this.route.snapshot.paramMap.get('id');
+    if (teamId) {
+      this.getTeamDetails(Number(teamId));
+    }
+  }
+
+  getTeamDetails(teamId: number) {
+
+    this.teamService.getTeamById(teamId)
+      .subscribe(result => {
+        this.team = result;
+      }, error => {
+        console.log(error);
+      });
+
   }
 
 }

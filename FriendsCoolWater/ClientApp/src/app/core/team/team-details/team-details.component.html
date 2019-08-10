@@ -1,33 +1,33 @@
 <div class="container-fluid">
 
-    <div class="row">
-        <div class="col-md-10 col-sm-10 col-xs-12">
-            <h3>Team Details</h3>
+    <div class="row header">
+        <div class="col-md-10 col-sm-10 col-8">
+            <h4>Team Details</h4>
         </div>
-        <div class="col-md-2 col-sm-2 col-xs-12">
-            <a class="nav-link" routerLink="/team"><i class="fa fa-backward"></i> Back</a>
+        <div class="col-md-2 col-sm-2 col-4">
+            <a class="btn btn-primary btn-sm float-right" routerLink="/team"><i class="fa fa-backward"></i> Back</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-12">
             <table class="table table-bordered table-sm table-striped">
                 <tbody>
                     <tr>
                         <td>Team Id</td>
-                        <td>1</td>
+                        <td>{{team.id}}</td>
                     </tr>
                     <tr>
                         <td>Team Name</td>
-                        <td>Test Name</td>
+                        <td><strong>{{team.name}}</strong></td>
                     </tr>
                     <tr>
                         <td>Description</td>
-                        <td></td>
+                        <td>{{team.description}}</td>
                     </tr>
                     <tr>
                         <td>Active</td>
-                        <td></td>
+                        <td [ngClass]="{'text-success': team.active, 'text-danger': !team.active}">{{team.active ? 'Yes': 'No'}}</td>
                     </tr>
                 </tbody>
             </table>

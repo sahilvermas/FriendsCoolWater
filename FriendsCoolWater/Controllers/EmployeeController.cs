@@ -1,6 +1,6 @@
 ﻿using FriendsCoolWater.Data;
 using FriendsCoolWater.Models;
-using Microsoft.AspNetCore.Authorization;
+using FriendsCoolWater.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +20,17 @@ namespace FriendsCoolWater.Controllers
         [HttpGet("[action]")]
         public IActionResult GetEmployees()
         {
-            return Ok(_db.Employees.ToList());
+            var data = _db.Employees.Select(e => new EmployeeVM
+            {
+                Id = e.Id,
+                FirstName = e.FirstName,
+                LastName = e.LastName,
+                Active = e.Active,
+                TeamId = e.TeamId,
+                TeamName = e.Teams.Name
+            }).ToList<EmployeeVM>();
+
+            return Ok(data);
         }
 
         [HttpGet("[action]/{id}")]
@@ -39,6 +49,11 @@ namespace FriendsCoolWater.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> AddEmployee([FromBody]EmployeeModel formData)
         {
+            if (formData == null)
+            {
+                return BadRequest("No data passed");
+            }
+
             var newEmployee = new EmployeeModel()
             {
                 Id = formData.Id,

@@ -11,7 +11,7 @@ namespace FriendsCoolWater.Models
     public class EmployeeModel
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [Column("Fk_TeamId")]
@@ -27,7 +27,6 @@ namespace FriendsCoolWater.Models
         [Required]
         public bool Active { get; set; }
 
-        [Required]
         [ForeignKey("TeamId")]
         public virtual TeamModel Teams { get; set; }
     }

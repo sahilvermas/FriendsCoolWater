@@ -3,5 +3,9 @@ export interface Employee {
     firstName: string;
     lastName: string;
     active: boolean;
-    teamId: number
+    teamId: number;
+}
+
+export interface EmployeeVM extends Employee {
+    teamName: string;
 }
