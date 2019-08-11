@@ -7,6 +7,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { TeamService } from '../team.service';
 import { Router } from '@angular/router';
 import { AccountService } from '../../account/account.service';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-team-list',
@@ -31,6 +32,8 @@ export class TeamListComponent implements OnInit, OnDestroy {
   @ViewChild('template', { static: false }) modal: TemplateRef<any>;
   // Update Modal
   @ViewChild('editTemplate', { static: false }) editmodal: TemplateRef<any>;
+  // Delete Modal
+  @ViewChild('teamDelTemplate', { static: false }) deleteModal: DataTableDirective;
 
   // Modal properties
   modalMessage: string;
@@ -53,6 +56,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private chRef: ChangeDetectorRef,
     private router: Router,
+    private toastr: ToastService,
     private accountService: AccountService) { }
 
   /// Load Add New Team Modal
@@ -77,10 +81,15 @@ export class TeamListComponent implements OnInit, OnDestroy {
           // this.rerender();
 
         });
-        console.log('New Team added');
+        this.toastr.success('Team saved successfully');
 
       },
-      error => console.log('Could not add Team')
+      error => {
+        if (error.error) {
+          this.toastr.error(error.error);
+        }
+        console.log('Could not add Team')
+      }
 
     );
 
@@ -111,9 +120,15 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
           this.modalRef.hide();
           //this.rerender();
+          this.toastr.success('Team updated successfully');
         });
       },
-      error => console.log('Could Not Update Team')
+      error => {
+        if (error.error) {
+          this.toastr.error(error.error);
+        }
+        console.log('Could Not Update Team');
+      }
     );
   }
 
@@ -136,21 +151,28 @@ export class TeamListComponent implements OnInit, OnDestroy {
   }
 
   // Method to Delete the team
-  onDelete(team: Team): void {
+  onDeleteConfirm(team: Team): void {
+    this.selectedTeam = team;
+    this.modalRef = this.modalService.show(this.deleteModal, { class: 'modal-md', backdrop: 'static', keyboard: false });
+  }
 
-    const isDelete = confirm(`Do you want to delete '${team.name}' team?`);
-    if (isDelete) {
+  onDelete() {
 
-      this.teamService.deleteTeam(team.id).subscribe(result => {
+    if (this.selectedTeam) {
+
+      this.teamService.deleteTeam(this.selectedTeam.id).subscribe(result => {
         this.teamService.clearCache();
         this.teams$ = this.teamService.getTeams();
         this.teams$.subscribe(newlist => {
           this.teams = newlist;
 
           //this.rerender();
+          this.toastr.success('Team deleted sucessfully');
         });
+      }, errorRes => {
+        this.modalRef.hide();
+        this.toastr.error(errorRes.error);
       });
-
     }
   }
 
@@ -178,7 +200,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
     // Initializing Add team properties
     this.name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
     this.description = new FormControl('', Validators.maxLength(100));
-    this.active = new FormControl('', [Validators.required]);
+    this.active = new FormControl(true, [Validators.required]);
 
     this.insertForm = this.fb.group({
       name: this.name,
@@ -189,7 +211,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
     // Initializing Update Team properties
     this._name = new FormControl('', [Validators.required, Validators.maxLength(50)]);
     this._description = new FormControl('', Validators.maxLength(100));
-    this._active = new FormControl('', [Validators.required]);
+    this._active = new FormControl(true, [Validators.required]);
     this._id = new FormControl();
 
     this.updateForm = this.fb.group(

@@ -6,6 +6,7 @@ import { CustomerService } from '../customer.service';
 import { Router } from '@angular/router';
 import { AccountService } from '../../account/account.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../../shared/toast.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -40,6 +41,7 @@ export class CustomerListComponent implements OnInit {
     private customerService: CustomerService,
     private chRef: ChangeDetectorRef,
     private router: Router,
+    private toastr: ToastService,
     private accountService: AccountService
   ) { }
 
@@ -60,7 +62,7 @@ export class CustomerListComponent implements OnInit {
       this.chRef.detectChanges();
     }, error => {
       if (error.status === 401) {
-        console.log('Unauthorized Access');
+        this.toastr.warning('Unauthorized Access');
       }
     });
 
@@ -118,10 +120,10 @@ export class CustomerListComponent implements OnInit {
           this.cusForm.reset();
         });
 
-        console.log(resMsg);
+        this.toastr.success(resMsg);
       },
       error => {
-        console.log('Could not save customer', error.error);
+        this.toastr.error(error.error.message);
       });
   }
 
@@ -145,7 +147,13 @@ export class CustomerListComponent implements OnInit {
         });
         this.selectedCustomer = null;
         this.modalRef.hide();
-      })
+        this.toastr.success('Customer deleted successfully');
+      },
+        error => {
+          if (error.error) {
+            this.toastr.error(error.error.message);
+          }
+        })
     }
   }
 

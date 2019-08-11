@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { AccountService } from '../../account/account.service';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastService } from '../../shared/toast.service';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-employee-list',
@@ -27,11 +29,11 @@ export class EmployeeListComponent implements OnInit {
   selectedEmployee: Employee;
 
   empForm = new FormGroup({
-    id: new FormControl(0),
+    id: new FormControl(),
     teamId: new FormControl('-1', Validators.required),
     firstName: new FormControl('', [Validators.required, Validators.maxLength(30)]),
     lastName: new FormControl('', Validators.maxLength(30)),
-    active: new FormControl('', Validators.required)
+    active: new FormControl(true, Validators.required)
   });
 
   constructor(
@@ -40,6 +42,7 @@ export class EmployeeListComponent implements OnInit {
     private employeeService: EmployeeService,
     private chRef: ChangeDetectorRef,
     private router: Router,
+    private toastr: ToastService,
     private accountService: AccountService) { }
 
   // Add Modal
@@ -98,13 +101,14 @@ export class EmployeeListComponent implements OnInit {
   }
 
   onSubmitEmployee() {
-
+    let msg = '';
     const employee = this.empForm.value;
-    console.log(employee);
     let response$ = null;
     if (employee.id) {
+      msg = 'Employee updated successfully'
       response$ = this.updateEmployee(employee.id, employee);
     } else {
+      msg = 'Employee saved successfully';
       response$ = this.addNewEmployee(employee);
     }
 
@@ -119,10 +123,14 @@ export class EmployeeListComponent implements OnInit {
           this.modalRef.hide();
           this.empForm.reset();
         });
-
-        console.log('Employee saved successfully');
+        this.toastr.success(msg);
       },
-      error => console.log(error.error.message)
+      error => {
+        if (error.error) {
+          this.toastr.error(error.error.message);
+        }
+        console.log(error);
+      }
     );
   }
 
@@ -156,6 +164,11 @@ export class EmployeeListComponent implements OnInit {
         });
         this.selectedEmployee = null;
         this.modalRef.hide();
+        this.toastr.success('Employee deleted sucessfully');
+      }, error => {
+        if (error.error) {
+          this.toastr.error(error.error.message);
+        }
       })
     }
   }

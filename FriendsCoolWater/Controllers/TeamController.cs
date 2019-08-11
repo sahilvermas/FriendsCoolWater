@@ -33,6 +33,11 @@ namespace FriendsCoolWater.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> AddTeam([FromBody]TeamModel formData)
         {
+            if (_db.Teams.Any(t => t.Name.Equals(formData.Name, System.StringComparison.OrdinalIgnoreCase)))
+            {
+                return BadRequest(string.Format("Team with {0} name already exists", formData.Name));
+            }
+
             var newTeam = new TeamModel()
             {
                 Id = formData.Id,
@@ -53,6 +58,11 @@ namespace FriendsCoolWater.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (_db.Teams.Any(t => t.Name.Equals(formData.Name, System.StringComparison.OrdinalIgnoreCase) && t.Id != formData.Id))
+            {
+                return BadRequest(string.Format("Team with {0} name already exists", formData.Name));
             }
 
             var team = _db.Teams.FirstOrDefault(t => t.Id == id);
@@ -79,6 +89,12 @@ namespace FriendsCoolWater.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if (_db.Employees.Any(e => e.TeamId == id))
+            {
+                return BadRequest("There exists some employees in this team, remove them first to delete the team.");
+            }
+
             var team = await _db.Teams.FindAsync(id);
             if (team == null)
             {

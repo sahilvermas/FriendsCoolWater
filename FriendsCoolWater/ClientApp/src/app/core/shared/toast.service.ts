@@ -13,19 +13,19 @@ export class ToastService {
 
   constructor(private toastr: ToastrService) { }
 
-  showSuccess(msg: string, title: string = 'Success') {
+  success(msg: string, title: string = 'Success') {
     this.toastr.success(msg, title, this.options);
   }
 
-  showError(msg: string, title: string = 'Error') {
+  error(msg: string, title: string = 'Error') {
     this.toastr.error(msg, title, this.options);
   }
 
-  showWarning(msg: string, title: string = 'Warning') {
+  warning(msg: string, title: string = 'Warning') {
     this.toastr.warning(msg, title, this.options);
   }
 
-  showInfo(msg: string, title: string = 'Information') {
+  info(msg: string, title: string = 'Information') {
     this.toastr.info(msg, title, this.options);
   }
 }

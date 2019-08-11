@@ -30,7 +30,7 @@
                     <div class="mt-4 no-margin" role="group">
                         <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
                         <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDelete(team)"><i class="fas fa-trash"></i></button>
+                        <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(team)"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             </tr>
@@ -149,3 +149,24 @@
 </ng-template>
 
 <!-- EDIT TEAM MODAL END-->
+
+
+<!-- DELETE EMPLOYEE MODAL START-->
+<ng-template #teamDelTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation!</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body text-danger">
+        <h4>Are you confirm to delete the team?</h4>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="onDelete()">Yes</button>
+        <button type="button" class="btn btn-default" (click)="modalRef.hide()">No</button>
+    </div>
+</ng-template>
+
+<!-- DELETE EMPLOYEE MODAL START-->
