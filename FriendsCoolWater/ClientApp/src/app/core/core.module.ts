@@ -14,6 +14,7 @@ import { AuthGuardService } from './guards/auth-guard.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { CustomerModule } from './customer/customer.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     AccountModule,
     TeamModule,
     EmployeeModule,
+    CustomerModule,
     ModalModule.forRoot()
   ],
   exports: [
@@ -39,7 +41,8 @@ import { ContactUsComponent } from './contact-us/contact-us.component';
     AccessDeniedComponent,
     AccountModule,
     TeamModule,
-    EmployeeModule],
+    EmployeeModule,
+    CustomerModule],
   providers: [
     AuthGuardService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }]

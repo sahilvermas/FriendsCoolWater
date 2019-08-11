@@ -8,6 +8,7 @@ import { EmployeeModule } from '../employee/employee.module';
 import { AccessDeniedComponent } from '../errors/access-denied/access-denied.component';
 import { AboutUsComponent } from '../about-us/about-us.component';
 import { ContactUsComponent } from '../contact-us/contact-us.component';
+import { CustomerModule } from '../customer/customer.module';
 
 export const RoutePaths: Routes = [
     { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -18,6 +19,7 @@ export const RoutePaths: Routes = [
     { path: 'home', component: HomeComponent, pathMatch: 'full' },
     { path: 'team', loadChildren: () => TeamModule },
     { path: 'employee', loadChildren: () => EmployeeModule },
+    { path: 'customer', loadChildren: () => CustomerModule },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: '**', component: PageNotFoundComponent }
 ];

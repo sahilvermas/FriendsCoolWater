@@ -35,7 +35,6 @@ export class EmployeeListComponent implements OnInit {
   });
 
   constructor(
-    private fb: FormBuilder,
     private modalService: BsModalService,
     private teamService: TeamService,
     private employeeService: EmployeeService,

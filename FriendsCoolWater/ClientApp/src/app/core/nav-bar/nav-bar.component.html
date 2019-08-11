@@ -21,6 +21,9 @@
             <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
                 <a class="nav-link" routerLink="employee" *ngIf="LoginStatus">Employee</a>
             </li>
+            <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
+                <a class="nav-link" routerLink="customer" *ngIf="LoginStatus">Customer</a>
+            </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">

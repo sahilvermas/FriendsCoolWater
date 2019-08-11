@@ -15,4 +15,11 @@ export class ApiUrl {
     public addEmployeeUrl = `${this.baseUrl}employee/addEmployee/`;
     public updateEmployeeUrl = `${this.baseUrl}employee/updateEmployee/`;
     public deleteEmployeeUrl = `${this.baseUrl}employee/deleteEmployee/`;
+
+    public getCustomersUrl = `${this.baseUrl}customer/getCustomers`;
+    public getCustomerByIdUrl = `${this.baseUrl}customer/getCustomer/`;
+    public addCustomerUrl = `${this.baseUrl}customer/addCustomer/`;
+    public updateCustomerUrl = `${this.baseUrl}customer/updateCustomer/`;
+    public deleteCustomerUrl = `${this.baseUrl}customer/deleteCustomer/`;
+
 }

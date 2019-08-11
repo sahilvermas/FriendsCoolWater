@@ -95,7 +95,7 @@ namespace FriendsCoolWater.Controllers
 
                 var roles = await _userManager.GetRolesAsync(user);
                 var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Secret));
-                var tokenExpiryTime = Convert.ToDouble(_appSettings.ExpireTime);               
+                var tokenExpiryTime = Convert.ToDouble(_appSettings.ExpireTime);
 
                 // Generate JWT Token
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -120,6 +120,7 @@ namespace FriendsCoolWater.Controllers
                 {
                     token = tokenHandler.WriteToken(token),
                     expiration = token.ValidTo,
+                    userId = user.Id,
                     userName = user.UserName,
                     userRole = roles.FirstOrDefault()
                 });

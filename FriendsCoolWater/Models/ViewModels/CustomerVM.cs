@@ -1,6 +1,6 @@
 ﻿namespace FriendsCoolWater.Models.ViewModels
 {
-    public class CustomerVM : Customer
+    public class CustomerVM : CustomerModel
     {
         public int TotalPerDay
         {
@@ -9,5 +9,7 @@
                 return UnitPerDay * UnitPrice;
             }
         }
+
+        public string CreatedByName { get; set; }
     }
 }

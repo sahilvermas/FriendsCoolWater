@@ -23,7 +23,7 @@ namespace FriendsCoolWater.Data
 
         public DbSet<TeamModel> Teams { get; set; }
         public DbSet<EmployeeModel> Employees { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerModel> Customers { get; set; }
 
     }
 }

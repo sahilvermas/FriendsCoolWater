@@ -3,6 +3,7 @@ import { AccountService } from '../account/account.service';
 import { Utility } from '../helpers/utility';
 import { Observable } from 'rxjs';
 import { TeamService } from '../team/team.service';
+import { CustomerService } from '../customer/customer.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -16,7 +17,10 @@ export class NavBarComponent implements OnInit {
   loggedUsername: string;
   loggedUserRole: string;
 
-  constructor(private accountService: AccountService, private teamService: TeamService) { }
+  constructor(
+    private accountService: AccountService,
+    private teamService: TeamService,
+    private customerService: CustomerService) { }
 
   LoginStatus$: Observable<boolean>;
   LoggedUserName$: Observable<string>;
@@ -28,6 +32,8 @@ export class NavBarComponent implements OnInit {
 
   onLogout() {
     this.teamService.clearCache();
+    this.teamService.clearCache();
+    this.customerService.clearCache();
     this.accountService.onLogout();
   }
 

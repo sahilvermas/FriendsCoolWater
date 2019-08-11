@@ -13,8 +13,9 @@ export class AccountService {
   apiUrl: ApiUrl;
 
   private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
-  private userName = new BehaviorSubject<string>(localStorage.getItem('userName'));
-  private userRole = new BehaviorSubject<string>(localStorage.getItem('userRole'));
+  private userId = new BehaviorSubject<string>(this.util.getLocalStorage('userId'));
+  private userName = new BehaviorSubject<string>(this.util.getLocalStorage('userName'));
+  private userRole = new BehaviorSubject<string>(this.util.getLocalStorage('userRole'));
 
   constructor(private http: HttpClient, private router: Router, private util: Utility) {
     this.apiUrl = new ApiUrl();
@@ -64,6 +65,9 @@ export class AccountService {
             // save the Jwt Token in the localStorage
             this.util.setLocalStorage('JwtToken', result.token);
 
+            // save the user id in the localStorage
+            this.util.setLocalStorage('userId', result.userId);
+
             // save the username in the localStorage
             this.util.setLocalStorage('userName', result.userName);
 
@@ -73,8 +77,8 @@ export class AccountService {
             // save the user's role in the localStorage
             this.util.setLocalStorage('userRole', result.userRole);
 
+            this.userId.next(this.util.getLocalStorage('userId'));
             this.userName.next(this.util.getLocalStorage('userName'));
-
             this.userRole.next(this.util.getLocalStorage('userRole'));
           }
 
@@ -100,6 +104,7 @@ export class AccountService {
     this.loginStatus.next(false);
     this.util.setLocalStorage('loginStatus', '0');
     this.util.removeLocalStorage('JwtToken');
+    this.util.removeLocalStorage('userId');
     this.util.removeLocalStorage('userName');
     this.util.removeLocalStorage('expiration');
     this.util.removeLocalStorage('userRole');
@@ -110,6 +115,11 @@ export class AccountService {
   // get the current logged user status
   get isUserLoggedIn() {
     return this.loginStatus.asObservable();
+  }
+
+  // get the current logged user id
+  get loggedUserId() {
+    return this.userId.asObservable();
   }
 
   // get the current logged user's name
