@@ -3,13 +3,19 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { AccountService } from '../account/account.service';
 import { Observable } from 'rxjs';
 import { Utility } from './utility';
+import { LoaderService } from '../shared/loader.service';
+import { finalize } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
-    constructor(private accountService: AccountService, private util: Utility) { }
+    constructor(
+        private accountService: AccountService,
+        private util: Utility,
+        private loader: LoaderService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        this.loader.show();
         const currentUser = this.accountService.isUserLoggedIn;
         const token = this.util.getLocalStorage('JwtToken');
         if (currentUser && token) {
@@ -20,6 +26,8 @@ export class JwtInterceptor implements HttpInterceptor {
             });
         }
 
-        return next.handle(request);
+        return next.handle(request).pipe(
+            finalize(() => this.loader.hide())
+        );
     }
 }

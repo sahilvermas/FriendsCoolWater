@@ -18,6 +18,8 @@ import { CustomerModule } from './customer/customer.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastService } from './shared/toast.service';
+import { LoaderService } from './shared/loader.service';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { ToastService } from './shared/toast.service';
     CustomerModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    NgxSpinnerModule,
     ModalModule.forRoot()
   ],
   exports: [
@@ -46,10 +49,11 @@ import { ToastService } from './shared/toast.service';
     AccessDeniedComponent,
     AccountModule,
     TeamModule,
+    NgxSpinnerModule,
     EmployeeModule,
     CustomerModule],
   providers: [
-    AuthGuardService, ToastService,
+    AuthGuardService, ToastService, LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }]
 })
 export class CoreModule { }
