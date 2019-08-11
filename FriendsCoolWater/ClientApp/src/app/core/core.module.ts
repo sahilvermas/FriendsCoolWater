@@ -15,6 +15,9 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { CustomerModule } from './customer/customer.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { ToastService } from './shared/toast.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,8 @@ import { CustomerModule } from './customer/customer.module';
     TeamModule,
     EmployeeModule,
     CustomerModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     ModalModule.forRoot()
   ],
   exports: [
@@ -44,7 +49,7 @@ import { CustomerModule } from './customer/customer.module';
     EmployeeModule,
     CustomerModule],
   providers: [
-    AuthGuardService,
+    AuthGuardService, ToastService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }]
 })
 export class CoreModule { }
