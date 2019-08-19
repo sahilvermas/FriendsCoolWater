@@ -9,10 +9,8 @@ import { TeamModule } from './team/team.module';
 import { RouterModule } from '@angular/router';
 import { AccountModule } from './account/account.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { AccessDeniedComponent } from './errors/access-denied/access-denied.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
-import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { CustomerModule } from './customer/customer.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,8 +24,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NavBarComponent,
     HomeComponent,
     PageNotFoundComponent,
-    AccessDeniedComponent,
-    AboutUsComponent,
     ContactUsComponent],
   imports: [
     CommonModule,
@@ -46,7 +42,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NavBarComponent,
     HomeComponent,
     PageNotFoundComponent,
-    AccessDeniedComponent,
     AccountModule,
     TeamModule,
     NgxSpinnerModule,

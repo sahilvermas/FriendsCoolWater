@@ -39,7 +39,7 @@ export class AuthGuardService implements CanActivate {
           if (this.util.getLocalStorage('userRole') === 'Employee'
             || this.util.getLocalStorage('userRole') === 'Customer') {
 
-            this.router.navigate(['access-denied']);
+            this.router.navigate(['app-page-not-found']);
             return false;
           }
 

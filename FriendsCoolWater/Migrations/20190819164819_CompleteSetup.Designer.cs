@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FriendsCoolWater.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190810081017_EmpModelUpdated")]
-    partial class EmpModelUpdated
+    [Migration("20190819164819_CompleteSetup")]
+    partial class CompleteSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,9 +21,48 @@ namespace FriendsCoolWater.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FriendsCoolWater.Models.CustomerModel", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(80);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("CustomerName")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("FirmName")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("MobileNumber")
+                        .HasMaxLength(12);
+
+                    b.Property<short>("UnitPerDay");
+
+                    b.Property<short>("UnitPrice");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
             modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FriendsCoolWater.Migrations
 {
-    public partial class InitialSetup : Migration
+    public partial class CompleteSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,28 @@ namespace FriendsCoolWater.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    FirmName = table.Column<string>(maxLength: 30, nullable: false),
+                    CustomerName = table.Column<string>(maxLength: 30, nullable: true),
+                    MobileNumber = table.Column<string>(maxLength: 12, nullable: true),
+                    Address = table.Column<string>(maxLength: 80, nullable: true),
+                    Description = table.Column<string>(maxLength: 100, nullable: true),
+                    UnitPerDay = table.Column<short>(nullable: false),
+                    UnitPrice = table.Column<short>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -266,6 +288,9 @@ namespace FriendsCoolWater.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Employees");

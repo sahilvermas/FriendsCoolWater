@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         if (error.status === 401) {
           this.errorMessage = error.error.loginError;
         } else {
+          console.log(error);
           this.errorMessage = 'Something happen wrong our end. Please try after some time.'
         }
       });
