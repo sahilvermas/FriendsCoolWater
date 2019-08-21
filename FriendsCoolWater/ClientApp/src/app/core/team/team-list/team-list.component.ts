@@ -69,8 +69,8 @@ export class TeamListComponent implements OnInit, OnDestroy {
   // Method to Add new Team
   onSubmit() {
     let newTeam: Team = this.insertForm.value;
-    newTeam.createdOn = new Date();
     newTeam.createdBy = this.loggedUserId;
+    newTeam.createdOn = new Date();
 
     this.teamService.addTeam(newTeam).subscribe(
       result => {
@@ -114,10 +114,9 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   // Update an Existing Team
   onUpdateTeam() {
-    let editTeam = this.updateForm.value;
-
-    editTeam.modifiedOn = new Date();
+    let editTeam: Team = this.updateForm.value;
     editTeam.modifiedBy = this.loggedUserId;
+    editTeam.modifiedOn = new Date();
 
     this.teamService.updateTeam(editTeam.id, editTeam).subscribe(
       result => {

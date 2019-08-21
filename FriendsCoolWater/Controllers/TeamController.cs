@@ -1,5 +1,6 @@
 ﻿using FriendsCoolWater.Data;
 using FriendsCoolWater.Models;
+using FriendsCoolWater.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -20,7 +21,23 @@ namespace FriendsCoolWater.Controllers
         [HttpGet("[action]")]
         public IActionResult GetTeams()
         {
-            return Ok(_db.Teams.ToList());
+            var data = _db.Teams
+                .Select(t => new TeamVM()
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    Active = t.Active,
+                    TeamEmployees = t.TeamEmployees.ToList(),
+                    CreatedBy = t.CreatedBy,
+                    CreatedOn = t.CreatedOn,
+                    ModifiedBy = t.ModifiedBy,
+                    ModifiedOn = t.ModifiedOn,
+                    CreatedByName = _db.Users.First(u => u.Id == t.CreatedBy).UserName,
+                    ModifiedByName = _db.Users.FirstOrDefault(u => u.Id == t.ModifiedBy).UserName
+                })
+                .ToList();
+            return Ok(data);
         }
 
         [HttpGet("[action]/{id}")]
@@ -57,11 +74,6 @@ namespace FriendsCoolWater.Controllers
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateTeam([FromRoute]int id, [FromBody]TeamModel formData)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             if (_db.Teams.Any(t => t.Name.Equals(formData.Name, System.StringComparison.OrdinalIgnoreCase) && t.Id != formData.Id))
             {
                 return BadRequest(string.Format("Team with {0} name already exists", formData.Name));
@@ -76,6 +88,8 @@ namespace FriendsCoolWater.Controllers
             team.Name = formData.Name;
             team.Description = formData.Description;
             team.Active = formData.Active;
+            team.ModifiedBy = formData.ModifiedBy;
+            team.ModifiedOn = formData.ModifiedOn;
 
             _db.Entry(team).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _db.SaveChangesAsync();
