@@ -1,68 +1,66 @@
 <div class="container-fluid">
-
-    <div class="row header">
-        <div class="col-md-10 col-sm-10 col-8">
-            <h4>Customer Details</h4>
-        </div>
-        <div class="col-md-2 col-sm-2 col-4">
-            <a class="btn btn-primary btn-sm float-right" routerLink="/customer"><i class="fa fa-backward"></i> Back</a>
-        </div>
+  <div class="row header">
+    <div class="col-md-10 col-sm-10 col-8">
+      <h4>Customer Details</h4>
     </div>
-
-    <div class="row">
-        <div class="col-md-6 col-sm-6 col-12">
-            <table class="table table-bordered table-sm table-striped">
-                <tbody>
-                    <tr>
-                        <td>Customer Id</td>
-                        <td>{{customer.id}}</td>
-                    </tr>
-                    <tr>
-                        <td>Firm Name</td>
-                        <td>{{customer.firmName}}</td>
-                    </tr>
-                    <tr>
-                        <td>Customer Name</td>
-                        <td><strong>{{customer.customerName}}</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Mobile Number</td>
-                        <td>{{customer.mobileNumber }}</td>
-                    </tr>
-                    <tr>
-                        <td>Address</td>
-                        <td>{{customer.address }}</td>
-                    </tr>
-                    <tr>
-                        <td>Description</td>
-                        <td>{{customer.description }}</td>
-                    </tr>
-                    <tr>
-                        <td>Per Unit Price</td>
-                        <td>&#8377; {{customer.unitPrice }}</td>
-                    </tr>
-                    <tr>
-                        <td>Unit Per Day</td>
-                        <td>{{customer.unitPerDay }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total Per Day</td>
-                        <td>&#8377; {{customer.totalPerDay }}</td>
-                    </tr>
-                    <tr>
-                        <td>Customer Since</td>
-                        <td>{{customer.createdOn | date: 'dd-MMM-yyyy, hh:mm a' }}</td>
-                    </tr>
-                    <tr>
-                        <td>Created By</td>
-                        <td><em>{{customer.createdByName }}</em></td>
-                    </tr>
-                    <tr>
-                        <td>Active</td>
-                        <td [ngClass]="{'text-success': customer.active, 'text-danger': !customer.active}">{{customer.active ? 'Yes': 'No'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="col-md-2 col-sm-2 col-4">
+      <a class="btn btn-primary btn-sm float-right" routerLink="/customer"><i class="fa fa-backward"></i> Back</a>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-6 col-12">
+      <table class="table table-bordered table-sm table-striped">
+        <tbody>
+          <tr>
+            <td>Customer Id</td>
+            <td>{{customer.id}}</td>
+          </tr>
+          <tr>
+            <td>Firm Name</td>
+            <td>{{customer.firmName}}</td>
+          </tr>
+          <tr>
+            <td>Customer Name</td>
+            <td><strong>{{customer.customerName}}</strong></td>
+          </tr>
+          <tr>
+            <td>Mobile Number</td>
+            <td>{{customer.mobileNumber }}</td>
+          </tr>
+          <tr>
+            <td>Address</td>
+            <td>{{customer.address }}</td>
+          </tr>
+          <tr>
+            <td>Description</td>
+            <td>{{customer.description }}</td>
+          </tr>
+          <tr>
+            <td>Per Unit Price</td>
+            <td>&#8377; {{customer.unitPrice }}</td>
+          </tr>
+          <tr>
+            <td>Unit Per Day</td>
+            <td>{{customer.unitPerDay }}</td>
+          </tr>
+          <tr>
+            <td>Total Per Day</td>
+            <td>&#8377; {{customer.totalPerDay }}</td>
+          </tr>
+          <tr>
+            <td>Customer Since</td>
+            <td>{{customer.createdOn | date: 'dd MMM, yyyy hh:mm a' }}</td>
+          </tr>
+          <tr>
+            <td>Created By</td>
+            <td><em>{{customer.createdByName }}</em></td>
+          </tr>
+          <tr>
+            <td>Active</td>
+            <td [ngClass]="{'text-success': customer.active, 'text-danger': !customer.active}">{{customer.active ? 'Active': 'Inactive'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

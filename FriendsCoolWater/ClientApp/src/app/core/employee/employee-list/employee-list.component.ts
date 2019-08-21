@@ -96,8 +96,7 @@ export class EmployeeListComponent implements OnInit {
       active: emp.active
     });
 
-    this.modalRef = this.modalService
-      .show(this.empManageModal, { class: 'modal-lg', backdrop: 'static', keyboard: false });
+    this.showModal(this.empManageModal);
   }
 
   onSubmitEmployee() {

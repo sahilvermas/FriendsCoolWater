@@ -46,7 +46,6 @@ export class AccountService {
     return false;
   }
 
-
   Login(loginData: LoginModel) {
     return this.http
       .post<any>(this.apiUrl.loginUrl, loginData)
