@@ -15,6 +15,10 @@ import { ToastService } from '../../shared/toast.service';
   styleUrls: ['./team-list.component.css']
 })
 export class TeamListComponent implements OnInit, OnDestroy {
+
+  userRoleStatus: string;
+  loggedUserId: string;
+
   // For the FormControl - Adding teams
   insertForm: FormGroup;
   name: FormControl;
@@ -41,8 +45,6 @@ export class TeamListComponent implements OnInit, OnDestroy {
   selectedTeam: Team;
   teams$: Observable<Team[]>;
   teams: Team[] = [];
-  userRoleStatus: string;
-
 
   // Datatables Properties
   dtOptions: DataTables.Settings = {};
@@ -66,7 +68,9 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   // Method to Add new Team
   onSubmit() {
-    const newTeam = this.insertForm.value;
+    let newTeam: Team = this.insertForm.value;
+    newTeam.createdOn = new Date();
+    newTeam.createdBy = this.loggedUserId;
 
     this.teamService.addTeam(newTeam).subscribe(
       result => {
@@ -87,6 +91,7 @@ export class TeamListComponent implements OnInit, OnDestroy {
       error => {
         if (error.error) {
           this.toastr.error(error.error);
+          console.log(error)
         }
         console.log('Could not add Team')
       }
@@ -109,7 +114,11 @@ export class TeamListComponent implements OnInit, OnDestroy {
 
   // Update an Existing Team
   onUpdateTeam() {
-    const editTeam = this.updateForm.value;
+    let editTeam = this.updateForm.value;
+
+    editTeam.modifiedOn = new Date();
+    editTeam.modifiedBy = this.loggedUserId;
+
     this.teamService.updateTeam(editTeam.id, editTeam).subscribe(
       result => {
         console.log('Team Updated');
@@ -191,8 +200,10 @@ export class TeamListComponent implements OnInit, OnDestroy {
       order: [[0, 'desc']]
     };
 
-    this.teams$ = this.teamService.getTeams();
+    this.accountService.loggedUserId.subscribe(result => { this.loggedUserId = result; });
     this.accountService.loggedUserRole.subscribe(result => { this.userRoleStatus = result; });
+
+    this.teams$ = this.teamService.getTeams();
 
     // Modal Message
     this.modalMessage = 'All Fields Are Mandatory';

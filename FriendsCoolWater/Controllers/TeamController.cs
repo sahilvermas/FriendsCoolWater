@@ -43,7 +43,9 @@ namespace FriendsCoolWater.Controllers
                 Id = formData.Id,
                 Name = formData.Name,
                 Active = formData.Active,
-                Description = formData.Description
+                Description = formData.Description,
+                CreatedBy = formData.CreatedBy,
+                CreatedOn = formData.CreatedOn
             };
 
             await _db.Teams.AddAsync(newTeam);
@@ -88,11 +90,6 @@ namespace FriendsCoolWater.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (_db.Employees.Any(e => e.TeamId == id))
-            {
-                return BadRequest("There exists some employees in this team, remove them first to delete the team.");
             }
 
             var team = await _db.Teams.FindAsync(id);

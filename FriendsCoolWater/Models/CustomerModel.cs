@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -43,6 +44,14 @@ namespace FriendsCoolWater.Models
         [Required]
         [MaxLength(50)]
         public string CreatedBy { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public virtual ICollection<CollectionModel> Collections { get; set; }
     }
 }
 

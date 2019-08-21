@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FriendsCoolWater.Migrations
 {
-    public partial class CompleteSetup : Migration
+    public partial class InitialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,7 +62,9 @@ namespace FriendsCoolWater.Migrations
                     UnitPrice = table.Column<short>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
-                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedBy = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -77,7 +79,11 @@ namespace FriendsCoolWater.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 100, nullable: true),
-                    Active = table.Column<bool>(nullable: false)
+                    Active = table.Column<bool>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedBy = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -191,23 +197,28 @@ namespace FriendsCoolWater.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "Collections",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Fk_TeamId = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(maxLength: 30, nullable: false),
-                    LastName = table.Column<string>(maxLength: 30, nullable: true),
-                    Active = table.Column<bool>(nullable: false)
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    CalculatedAmount = table.Column<double>(nullable: false),
+                    CollectionAmount = table.Column<double>(nullable: false),
+                    Comments = table.Column<string>(maxLength: 100, nullable: true),
+                    Fk_CustomerId = table.Column<int>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedBy = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Collections", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Employees_Teams_Fk_TeamId",
-                        column: x => x.Fk_TeamId,
-                        principalTable: "Teams",
+                        name: "FK_Collections_Customers_Fk_CustomerId",
+                        column: x => x.Fk_CustomerId,
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -267,9 +278,9 @@ namespace FriendsCoolWater.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employees_Fk_TeamId",
-                table: "Employees",
-                column: "Fk_TeamId");
+                name: "IX_Collections_Fk_CustomerId",
+                table: "Collections",
+                column: "Fk_CustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -290,10 +301,10 @@ namespace FriendsCoolWater.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Collections");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -302,7 +313,7 @@ namespace FriendsCoolWater.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "Customers");
         }
     }
 }

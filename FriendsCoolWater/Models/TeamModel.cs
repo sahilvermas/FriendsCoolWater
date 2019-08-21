@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,6 +21,20 @@ namespace FriendsCoolWater.Models
         [Required]
         public bool Active { get; set; }
 
-        public virtual ICollection<EmployeeModel> Employees { get; set; }
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedOn { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+        
+        [DataType(DataType.DateTime)]
+        public DateTime? ModifiedOn { get; set; }
+        
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public virtual ICollection<TeamEmployeeModel> TeamEmployees { get; set; }
     }
 }

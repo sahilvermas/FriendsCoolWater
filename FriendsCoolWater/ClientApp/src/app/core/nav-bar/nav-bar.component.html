@@ -16,9 +16,6 @@
                 <a class="nav-link" routerLink="team" *ngIf="LoginStatus">Team</a>
             </li>
             <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
-                <a class="nav-link" routerLink="employee" *ngIf="LoginStatus">Employee</a>
-            </li>
-            <li class="nav-item link" *ngIf="(LoginStatus$ | async) as LoginStatus">
                 <a class="nav-link" routerLink="customer" *ngIf="LoginStatus">Customer</a>
             </li>
         </ul>

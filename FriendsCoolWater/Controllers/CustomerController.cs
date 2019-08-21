@@ -3,6 +3,7 @@ using FriendsCoolWater.Models;
 using FriendsCoolWater.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,10 @@ namespace FriendsCoolWater.Controllers
                 UnitPrice = c.UnitPrice,
                 CreatedOn = c.CreatedOn,
                 CreatedBy = c.CreatedBy,
-                CreatedByName = _db.Users.First(u => u.Id == c.CreatedBy).UserName
+                ModifiedBy = c.ModifiedBy,
+                ModifiedOn = c.ModifiedOn,
+                CreatedByName = _db.Users.First(u => u.Id == c.CreatedBy).UserName,
+                ModifiedByName = _db.Users.FirstOrDefault(u => u.Id == c.ModifiedBy).UserName
             }).ToList<CustomerVM>();
 
             return Ok(data);
@@ -96,6 +100,8 @@ namespace FriendsCoolWater.Controllers
             customer.UnitPrice = formData.UnitPrice;
             customer.UnitPerDay = formData.UnitPerDay;
             customer.Active = formData.Active;
+            customer.ModifiedBy = formData.ModifiedBy;
+            customer.ModifiedOn = formData.ModifiedOn ?? DateTime.UtcNow;
 
             _db.Entry(customer).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _db.SaveChangesAsync();

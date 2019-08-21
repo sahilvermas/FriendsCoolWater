@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FriendsCoolWater.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190819164819_CompleteSetup")]
-    partial class CompleteSetup
+    [Migration("20190821184012_InitialSetup")]
+    partial class InitialSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,42 @@ namespace FriendsCoolWater.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("FriendsCoolWater.Models.CollectionModel", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("CalculatedAmount");
+
+                    b.Property<double>("CollectionAmount");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnName("Fk_CustomerId");
+
+                    b.Property<DateTime>("DateTime");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Collections");
+                });
 
             modelBuilder.Entity("FriendsCoolWater.Models.CustomerModel", b =>
                 {
@@ -51,6 +87,11 @@ namespace FriendsCoolWater.Migrations
                     b.Property<string>("MobileNumber")
                         .HasMaxLength(12);
 
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("ModifiedOn");
+
                     b.Property<short>("UnitPerDay");
 
                     b.Property<short>("UnitPrice");
@@ -58,31 +99,6 @@ namespace FriendsCoolWater.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Active");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(30);
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(30);
-
-                    b.Property<int>("TeamId")
-                        .HasColumnName("Fk_TeamId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("FriendsCoolWater.Models.TeamModel", b =>
@@ -93,8 +109,19 @@ namespace FriendsCoolWater.Migrations
 
                     b.Property<bool>("Active");
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("CreatedOn");
+
                     b.Property<string>("Description")
                         .HasMaxLength(100);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -286,11 +313,11 @@ namespace FriendsCoolWater.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
+            modelBuilder.Entity("FriendsCoolWater.Models.CollectionModel", b =>
                 {
-                    b.HasOne("FriendsCoolWater.Models.TeamModel", "Teams")
-                        .WithMany("Employees")
-                        .HasForeignKey("TeamId")
+                    b.HasOne("FriendsCoolWater.Models.CustomerModel", "Customer")
+                        .WithMany("Collections")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

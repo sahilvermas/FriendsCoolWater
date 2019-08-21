@@ -7,32 +7,37 @@
       <button class="btn btn-primary btn-sm float-right" *ngIf="userRoleStatus == 'Admin'" (click)="onAddTeam()"><i class="fa fa-plus"></i> Add</button>
     </div>
   </div>
-  <table class="table table-bordered table-condensed table-hover" style="width:100%">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let team of teams">
-        <td>{{team.id}}</td>
-        <td>{{team.name}}</td>
-        <td>{{team.description}}</td>
-        <td>{{true == team.active ? 'Active': 'Inactive'}}</td>
-        <td>
-          <div class="mt-4 no-margin" role="group">
-            <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
-            <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
-            <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(team)"><i class="fas fa-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="!teams.length">
+    <div class="no-data">No data found</div>
+  </div>
+  <div *ngIf="teams.length">
+    <table class="table table-bordered table-condensed table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of teams">
+          <td>{{team.id}}</td>
+          <td>{{team.name}}</td>
+          <td>{{team.description}}</td>
+          <td>{{true == team.active ? 'Active': 'Inactive'}}</td>
+          <td>
+            <div class="mt-4 no-margin" role="group">
+              <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
+              <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(team)"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <!-- ADD TEAM MODAL START-->
 <ng-template #template>

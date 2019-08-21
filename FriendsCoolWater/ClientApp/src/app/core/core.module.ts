@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { EmployeeModule } from './employee/employee.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
@@ -31,7 +30,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     HttpClientModule,
     AccountModule,
     TeamModule,
-    EmployeeModule,
     CustomerModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
@@ -45,7 +43,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AccountModule,
     TeamModule,
     NgxSpinnerModule,
-    EmployeeModule,
     CustomerModule],
   providers: [
     AuthGuardService, ToastService, LoaderService,

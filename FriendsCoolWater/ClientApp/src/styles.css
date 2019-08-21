@@ -22,6 +22,14 @@
   padding: 0.6em 1rem;
 }
 
+.no-data {
+  border: solid 1px #ddd;
+  padding: 0.5em;
+  border-radius: 1px;
+  background: #fff; 
+  color: #686868;
+}
+
 .btn-default {
   border: solid 2px #ddd;
   background: #eee;

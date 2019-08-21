@@ -7,42 +7,47 @@
       <button class="btn btn-primary btn-sm float-right" *ngIf="userRoleStatus == 'Admin'" (click)="onAddModal()"><i class="fa fa-plus"></i> Add</button>
     </div>
   </div>
-  <table class="table table-bordered table-condensed table-hover" style="width:100%">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Firm Name</th>
-        <th>Customer Name</th>
-        <th>Address</th>
-        <th>Description</th>
-        <th>Unit/Day</th>
-        <th>Unit Price</th>
-        <th>Total/Day</th>
-        <th>Active</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let cus of customers">
-        <td>{{cus.id}}</td>
-        <td>{{cus.firmName}}</td>
-        <td>{{cus.customerName}}</td>
-        <td>{{cus.address}}</td>
-        <td>{{cus.description}}</td>
-        <td>{{cus.unitPerDay}}</td>
-        <td>&#8377; {{cus.unitPrice}}</td>
-        <td>&#8377; {{cus.totalPerDay}}</td>
-        <td>{{true == cus.active ? 'Active': 'Inactive'}}</td>
-        <td>
-          <div class="mt-4 no-margin" role="group">
-            <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(cus.id)"><i class="fas fa-list"></i></button>
-            <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(cus)"><i class="fas fa-edit"></i></button>
-            <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(cus)"><i class="fas fa-trash"></i></button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="!customers.length">
+    <div class="no-data">No data found</div>
+  </div>
+  <div *ngIf="customers.length">
+    <table class="table table-bordered table-condensed table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Firm Name</th>
+          <th>Customer Name</th>
+          <th>Address</th>
+          <th>Description</th>
+          <th>Unit/Day</th>
+          <th>Unit Price</th>
+          <th>Total/Day</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cus of customers">
+          <td>{{cus.id}}</td>
+          <td>{{cus.firmName}}</td>
+          <td>{{cus.customerName}}</td>
+          <td>{{cus.address}}</td>
+          <td>{{cus.description}}</td>
+          <td>{{cus.unitPerDay}}</td>
+          <td>&#8377; {{cus.unitPrice}}</td>
+          <td>&#8377; {{cus.totalPerDay}}</td>
+          <td>{{true == cus.active ? 'Active': 'Inactive'}}</td>
+          <td>
+            <div class="mt-4 no-margin" role="group">
+              <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(cus.id)"><i class="fas fa-list"></i></button>
+              <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(cus)"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(cus)"><i class="fas fa-trash"></i></button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <!-- MANAGE CUSTOMER MODAL START-->
 <ng-template #cusManageTemplate>
