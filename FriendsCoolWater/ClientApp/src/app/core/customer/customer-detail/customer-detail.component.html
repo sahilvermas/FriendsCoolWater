@@ -48,16 +48,24 @@
             <td>&#8377; {{customer.totalPerDay }}</td>
           </tr>
           <tr>
+            <td>Status</td>
+            <td [ngClass]="{'text-success': customer.active, 'text-danger': !customer.active}">{{customer.active ? 'Active': 'Inactive'}}</td>
+          </tr>
+          <tr>
             <td>Customer Since</td>
             <td>{{customer.createdOn | date: 'dd MMM, yyyy hh:mm a' }}</td>
           </tr>
           <tr>
             <td>Created By</td>
-            <td><em>{{customer.createdByName }}</em></td>
+            <td>{{customer.createdByName}}</td>
           </tr>
-          <tr>
-            <td>Active</td>
-            <td [ngClass]="{'text-success': customer.active, 'text-danger': !customer.active}">{{customer.active ? 'Active': 'Inactive'}}</td>
+          <tr *ngIf="customer.modifiedOn">
+            <td>Last Modified On</td>
+            <td>{{customer.modifiedOn | date: 'dd MMM, yyyy hh:mm a'}}</td>
+          </tr>
+          <tr *ngIf="customer.modifiedOn">
+            <td>Last Modified By</td>
+            <td>{{customer.modifiedByName}}</td>
           </tr>
         </tbody>
       </table>

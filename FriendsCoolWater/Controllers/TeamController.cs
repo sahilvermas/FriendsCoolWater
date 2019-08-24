@@ -2,6 +2,7 @@
 using FriendsCoolWater.Models;
 using FriendsCoolWater.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,10 @@ namespace FriendsCoolWater.Controllers
     public class TeamController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public TeamController(ApplicationDbContext db)
+        private readonly UserManager<IdentityUser> _userManager;
+        public TeamController(UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
+            _userManager = userManager;
             _db = db;
         }
 
@@ -46,10 +49,31 @@ namespace FriendsCoolWater.Controllers
             return Ok(_db.Teams.Where(t => t.Id == id).ToList());
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetEmployeesInTeams()
+        {
+            var data = _db.TeamEmployees
+                .Select(t => new TeamEmployeeVM
+                {
+                    Id = t.Id,
+                    TeamId = t.TeamId,
+                    EmployeeId = t.EmployeeId,
+                    TeamName = t.Team.Name,
+                    EmployeeName = t.Employee.UserName
+                }).ToList();
+
+            return Ok(data);
+        }
+
         [Authorize(Policy = "RequiredAdminRole")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddTeam([FromBody]TeamModel formData)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (_db.Teams.Any(t => t.Name.Equals(formData.Name, System.StringComparison.OrdinalIgnoreCase)))
             {
                 return BadRequest(string.Format("Team with {0} name already exists", formData.Name));
@@ -74,6 +98,11 @@ namespace FriendsCoolWater.Controllers
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> UpdateTeam([FromRoute]int id, [FromBody]TeamModel formData)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (_db.Teams.Any(t => t.Name.Equals(formData.Name, System.StringComparison.OrdinalIgnoreCase) && t.Id != formData.Id))
             {
                 return BadRequest(string.Format("Team with {0} name already exists", formData.Name));

@@ -32,6 +32,7 @@ export class CustomerDetailComponent implements OnInit {
     this.customerService.getCustomerById(customerId)
       .subscribe(result => {
         this.customer = result;
+        console.log(result);
       }, error => {
         console.log(error);
       });

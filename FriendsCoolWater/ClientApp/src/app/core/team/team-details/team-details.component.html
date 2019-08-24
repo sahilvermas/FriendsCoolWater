@@ -24,8 +24,8 @@
             <td>{{team.description}}</td>
           </tr>
           <tr>
-            <td>Active</td>
-            <td [ngClass]="{'text-success': team.active, 'text-danger': !team.active}">{{team.active ? 'Yes': 'No'}}</td>
+            <td>Status</td>
+            <td [ngClass]="{'text-success': team.active, 'text-danger': !team.active}">{{team.active ? 'Active': 'Inactive'}}</td>
           </tr>
           <tr>
             <td>Created By</td>

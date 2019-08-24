@@ -13,9 +13,11 @@ namespace FriendsCoolWater.Controllers
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private UserManager<IdentityUser> _userManager;
 
         public CustomerController(UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
+            _userManager = userManager;
             _db = db;
         }
 

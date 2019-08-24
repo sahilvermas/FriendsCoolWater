@@ -7,10 +7,13 @@
       <button class="btn btn-primary btn-sm float-right" *ngIf="userRoleStatus == 'Admin'" (click)="onAddTeam()"><i class="fa fa-plus"></i> Add</button>
     </div>
   </div>
+
   <div *ngIf="!teams.length">
     <div class="no-data">No data found</div>
   </div>
+
   <div *ngIf="teams.length">
+
     <table class="table table-bordered table-condensed table-hover" style="width:100%">
       <thead>
         <tr>
@@ -29,8 +32,8 @@
           <td>{{true == team.active ? 'Active': 'Inactive'}}</td>
           <td>
             <div class="mt-4 no-margin" role="group">
-              <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(team)"><i class="fas fa-list"></i></button>
-              <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateModal(team)"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-success btn-sm btn-space" (click)="showTeamDetails(team)"><i class="fas fa-list"></i></button>
+              <button type="button" class="btn btn-primary btn-sm  btn-space" *ngIf="userRoleStatus == 'Admin'" (click)="onUpdateTeam(team)"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-danger btn-sm" *ngIf="userRoleStatus == 'Admin'" (click)="onDeleteConfirm(team)"><i class="fas fa-trash"></i></button>
             </div>
           </td>
@@ -38,10 +41,36 @@
       </tbody>
     </table>
   </div>
+
+  <div *ngIf="employeesInTeams.length">
+    <div class="row header">
+      <div class="col-md-12 col-sm-12 col-md-10">
+        <h4>Employees In Teams</h4>
+      </div>
+    </div>
+
+    <table class="table table-bordered table-condensed table-hover" style="width: auto">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Team Name</th>
+          <th>Employee Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let et of employeesInTeams">
+          <td>{{et.id}}</td>
+          <td>{{et.teamName}}</td>
+          <td>{{et.employeeName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<!-- ADD TEAM MODAL START-->
-<ng-template #template>
-  <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
+
+<!-- MANAGE TEAM MODAL START-->
+<ng-template #teamManageTemplate>
+  <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
     <div class="modal-header">
       <h4 class="modal-title">Add New Team</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -50,21 +79,20 @@
     </div>
     <div class="modal-body">
       <p class="text-info">{{modalMessage}}</p>
-
       <div class="form-group">
         <label for="name">Team Name</label>
         <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
-        <div *ngIf="name.touched && name.errors" class="form-text text-muted error">
-          <span *ngIf="name.hasError('required')">Team Name is required.</span>
-          <span *ngIf="name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
+        <div *ngIf="teamForm.get('name').touched && teamForm.get('name').errors" class="form-text text-muted error">
+          <span *ngIf="teamForm.get('name').errors.required">Team Name is required.</span>
+          <span *ngIf="teamForm.get('name').errors.maxlength">Only 50 characters allowed for Team Name.</span>
         </div>
       </div>
       <div class="form-group">
-        <label for="name">Team Name</label>
-        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 100 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
-        <div *ngIf="description.touched && description.errors" class="form-text text-muted error">
-          <span *ngIf="description.hasError('required')">Team Description is required.</span>
-          <span *ngIf="description.hasError('maxlength')">Only 100 characters allowed for Team Description.</span>
+        <label for="description">Team Name</label>
+        <textarea id="description" formControlName="description" class="form-control" placeholder="Describe the Team - Max 100 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
+        <div *ngIf="teamForm.get('description').touched && teamForm.get('description').errors" class="form-text text-muted error">
+          <span *ngIf="teamForm.get('description').errors.required">Team Description is required.</span>
+          <span *ngIf="teamForm.get('description').errors.maxlength">Only 100 characters allowed for Team Description.</span>
         </div>
       </div>
       <div class="form-group">
@@ -75,63 +103,15 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="submit" [disabled]="insertForm.invalid" class="btn btn-success btn-space">Submit</button>
+      <button type="submit" [disabled]="teamForm.invalid" class="btn btn-success btn-space">Submit</button>
       <button type="button" (click)="modalRef.hide()" class="btn btn-primary">Cancel</button>
     </div>
   </form>
 </ng-template>
-<!-- ADD TEAM MODAL START-->
-<!-- EDIT TEAM MODAL START-->
-<ng-template #editTemplate>
-  <form [formGroup]="updateForm" (ngSubmit)="onUpdateTeam()">
-    <div class="modal-header">
-      <h4 class="modal-title">Edit Team Details</h4>
-      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p class="text-info">{{modalMessage}}</p>
-      <div class="list-group-item" [hidden]="_id">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="teamId"><i class="fa fa-key"></i></span>
-          </div>
-          <input type="text" class="form-control" formControlName="id" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="name">Team Name</label>
-        <input type="text" id="name" formControlName="name" class="form-control" placeholder="eg: Avengers" aria-label="name" aria-describedby="teamTitle">
-        <div *ngIf="_name.touched && _name.errors" class="form-text text-muted error">
-          <span *ngIf="_name.hasError('required')">Team Name is required.</span>
-          <span *ngIf="_name.hasError('maxlength')">Only 50 characters allowed for Team Name.</span>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="name">Team Name</label>
-        <textarea formControlName="description" class="form-control" placeholder="Describe the Team - Max 100 Characters" aria-label="Description" aria-describedby="teamDescription"></textarea>
-        <div *ngIf="_description.touched && _description.errors" class="form-text text-muted error">
-          <span *ngIf="_description.hasError('maxlength')">Only 100 characters allowed for Team Description.</span>
-        </div>
-      </div>
+<!-- MANAGE TEAM MODAL START-->
 
-      <div class="form-group">
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" id="chkActive" formControlName="active" checked aria-label="Checkbox for following text input" class="custom-control-input">
-          <label class="custom-control-label" for="chkActive">Team Active</label>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" [disabled]="updateForm.invalid" class="btn btn-success btn-space">Submit</button>
-      <button type="button" (click)="modalRef.hide()" class="btn btn-primary">Cancel</button>
-    </div>
-  </form>
-</ng-template>
-<!-- EDIT TEAM MODAL END-->
 <!-- DELETE EMPLOYEE MODAL START-->
-<ng-template #teamDelTemplate>
+<ng-template #teamDeleteTemplate>
   <div class="modal-header">
     <h4 class="modal-title">Delete Confirmation!</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -142,7 +122,7 @@
     <h4>Are you confirm to delete the team?</h4>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="onDelete()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="deleteTeam()">Yes</button>
     <button type="button" class="btn btn-default" (click)="modalRef.hide()">No</button>
   </div>
 </ng-template>

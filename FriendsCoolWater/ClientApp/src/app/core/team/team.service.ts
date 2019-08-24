@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '../helpers/apiUrl';
 import { Observable } from 'rxjs';
-import { Team } from './team.Model';
+import { Team, EmployeesInTeams } from './team.Model';
 import { shareReplay, flatMap, first } from 'rxjs/operators';
 
 @Injectable()
@@ -10,6 +10,7 @@ export class TeamService {
   apiUrl: ApiUrl;
 
   private teams$: Observable<Team[]>;
+  private employeesInTeams$: Observable<EmployeesInTeams[]>;
 
   constructor(private http: HttpClient) {
     this.apiUrl = new ApiUrl();
@@ -30,6 +31,13 @@ export class TeamService {
       .pipe(flatMap(result => result), first(team => team.id === teamId));
   }
 
+  getEmployeesInTeams(): Observable<EmployeesInTeams[]> {
+    if (!this.employeesInTeams$) {
+      this.employeesInTeams$ = this.http.get<EmployeesInTeams[]>(this.apiUrl.getEmployeesInTeamsUrl).pipe(shareReplay());
+    }
+    return this.employeesInTeams$;
+  }
+
   addTeam(team: Team): Observable<Team> {
     return this.http.post<Team>(this.apiUrl.addTeamUrl, team);
   }
@@ -45,6 +53,7 @@ export class TeamService {
   // Clear cache
   clearCache() {
     this.teams$ = null;
+    this.employeesInTeams$ = null;
   }
 
 }

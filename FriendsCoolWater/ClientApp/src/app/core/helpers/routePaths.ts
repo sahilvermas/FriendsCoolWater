@@ -6,14 +6,16 @@ import { RegisterComponent } from '../account/register/register.component';
 import { TeamModule } from '../team/team.module';
 import { ContactUsComponent } from '../contact-us/contact-us.component';
 import { CustomerModule } from '../customer/customer.module';
+import { CollectionModule } from '../collection/collection.module';
 
 export const RoutePaths: Routes = [
-    { path: '', component: HomeComponent, pathMatch: 'full' },
-    { path: 'contactUs', component: ContactUsComponent, pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'home', component: HomeComponent, pathMatch: 'full' },
-    { path: 'team', loadChildren: () => TeamModule },
-    { path: 'customer', loadChildren: () => CustomerModule },
-    { path: '**', component: PageNotFoundComponent }
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'contactUs', component: ContactUsComponent, pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'home', component: HomeComponent, pathMatch: 'full' },
+  { path: 'team', loadChildren: () => TeamModule },
+  { path: 'customer', loadChildren: () => CustomerModule },
+  { path: 'collection', loadChildren: () => CollectionModule },
+  { path: '**', component: PageNotFoundComponent }
 ];

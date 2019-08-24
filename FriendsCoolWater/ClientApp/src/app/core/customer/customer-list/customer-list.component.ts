@@ -105,6 +105,10 @@ export class CustomerListComponent implements OnInit {
       cusResponse$ = this.customerService.addCustomer(customer);
       resMsg = 'Customer saved successfully';
     } else if (!this.isNewEntry && customer.id) {
+
+      customer.modifiedOn = new Date();
+      customer.modifiedBy = this.loggedUserId;
+
       cusResponse$ = this.customerService.updateCustomer(customer.id, customer);
       resMsg = 'Customer updated successfully';
     }
