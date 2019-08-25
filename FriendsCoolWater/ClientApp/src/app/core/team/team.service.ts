@@ -4,6 +4,7 @@ import { ApiUrl } from '../helpers/apiUrl';
 import { Observable } from 'rxjs';
 import { Team, EmployeesInTeams } from './team.Model';
 import { shareReplay, flatMap, first } from 'rxjs/operators';
+import { CommonService } from '../shared/common.service';
 
 @Injectable()
 export class TeamService {
@@ -12,7 +13,7 @@ export class TeamService {
   private teams$: Observable<Team[]>;
   private employeesInTeams$: Observable<EmployeesInTeams[]>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private commonService: CommonService) {
     this.apiUrl = new ApiUrl();
   }
 
@@ -52,8 +53,7 @@ export class TeamService {
 
   // Clear cache
   clearCache() {
-    this.teams$ = null;
-    this.employeesInTeams$ = null;
+    this.commonService.clearAllCache();
   }
 
 }

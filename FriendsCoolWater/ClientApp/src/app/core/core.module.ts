@@ -17,6 +17,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ToastService } from './shared/toast.service';
 import { LoaderService } from './shared/loader.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { CommonService } from './shared/common.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AccountModule,
     TeamModule,
     NgxSpinnerModule,
-    CustomerModule],
+    CustomerModule,],
   providers: [
     AuthGuardService, ToastService, LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }]

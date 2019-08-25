@@ -6,6 +6,10 @@
     margin-top: 2px
 }
 
+label {
+  font-weight: bold;
+}
+
 .modal-content {
     border-radius: 0.1rem !important;
     border: none;

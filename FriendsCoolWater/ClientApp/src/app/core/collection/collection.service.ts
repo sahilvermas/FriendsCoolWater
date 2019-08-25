@@ -5,16 +5,18 @@ import { Collection } from './collection.model';
 import { HttpClient } from '@angular/common/http';
 import { shareReplay } from 'rxjs/operators';
 import { Utility } from '../helpers/utility';
+import { CommonService } from '../shared/common.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CollectionService {
   apiUrl: ApiUrl;
 
   private collection$: Observable<Collection[]>;
 
-  constructor(private http: HttpClient, private util: Utility) {
+  constructor(
+    private http: HttpClient,
+    private util: Utility,
+    private commonService: CommonService) {
     this.apiUrl = new ApiUrl();
   }
 
@@ -29,7 +31,11 @@ export class CollectionService {
     return this.collection$;
   }
 
+  updateCollection(collectionId: number, collection: Collection): Observable<Collection> {
+    return this.http.put<Collection>(this.apiUrl.updateCollectionUrl + collectionId, collection);
+  }
+
   clearCache() {
-    this.collection$ = null;
+    this.commonService.clearAllCache();
   }
 }

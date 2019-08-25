@@ -6,6 +6,7 @@ import { CustomerService } from './customer.service';
 import { CustomerRoutingModule } from './customer-routing-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { CommonService } from '../shared/common.service';
 
 
 
@@ -13,6 +14,6 @@ import { DataTablesModule } from 'angular-datatables';
   declarations: [CustomerListComponent, CustomerDetailComponent],
   imports: [CommonModule, CustomerRoutingModule, FormsModule, ReactiveFormsModule, DataTablesModule],
   exports: [CustomerListComponent, CustomerDetailComponent],
-  providers: [CustomerService]
+  providers: [CustomerService, CommonService]
 })
 export class CustomerModule { }

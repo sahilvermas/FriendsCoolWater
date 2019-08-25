@@ -6,11 +6,12 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { TeamRoutingModule } from './team-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataTablesModule } from 'angular-datatables';
+import { CommonService } from '../shared/common.service';
 
 @NgModule({
   declarations: [TeamListComponent, TeamDetailsComponent],
   imports: [CommonModule, TeamRoutingModule, FormsModule, ReactiveFormsModule, DataTablesModule],
   exports: [TeamListComponent, TeamDetailsComponent],
-  providers: [TeamService]
+  providers: [TeamService, CommonService]
 })
 export class TeamModule { }

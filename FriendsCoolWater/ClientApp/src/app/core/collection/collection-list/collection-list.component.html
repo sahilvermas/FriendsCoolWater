@@ -1,13 +1,5 @@
 <div class="container-fluid">
-  <div class="row h-margin">
-    <div class="col-md-10">
-      <app-filter [teams]="teams"></app-filter>
-
-    </div>
-    <div class="col-md-2">
-      <button type="button" class="btn btn-outline-primary btn-sm btn-rt" (click)="onAddCollection()"><i class="fa fa-plus fa-1x"></i> Add</button>
-    </div>
-  </div>
+  <app-filter [teams]="teams"></app-filter>
 
   <div *ngIf="collections.length">
     <div class="row header">
@@ -21,6 +13,7 @@
         <tr>
           <th>Id</th>
           <th>Customer</th>
+          <th>Collected By</th>
           <th>Date Time</th>
           <th>(&#8377;) Calculated</th>
           <th>(&#8377;) Collection</th>
@@ -31,15 +24,16 @@
       <tbody>
         <tr *ngFor="let col of collections">
           <td>{{col.id}}</td>
-          <td>{{col.customerId}}</td>
+          <td><strong>{{col.firmName}}</strong> | {{col.customerName}}</td>
+          <td><strong>{{col.teamName}}</strong> | {{col.createdByName}}</td>
           <td>{{col.dateTime | date: 'dd MMM, yyyy hh:mm a'}}</td>
-          <td><strong>{{col.calculatedAmount}}</strong></td>
+          <td><strong>{{col.calculatedAmount.toFixed(2)}}</strong></td>
           <td>
             <strong [ngClass]="{'text-success': col.collectionAmount >= col.calculatedAmount, 'text-danger': col.collectionAmount < col.calculatedAmount}">
-              {{col.collectionAmount}}
+              {{col.collectionAmount.toFixed(2)}}
             </strong>
           </td>
-          <td>{{col.comments}}</td>
+          <td>{{col.comments.substring(0, 50)}}</td>
           <td>
             <div class="mt-4 no-margin" role="group">
               <button type="button" class="btn btn-success btn-sm btn-space" (click)="onSelect(col.id)"><i class="fas fa-list"></i></button>
@@ -55,7 +49,7 @@
 
 <!-- MANAGE TEAM MODAL START-->
 <ng-template #collectionTemplate>
-  <form (ngSubmit)="onSubmit()">
+  <form [formGroup]="colForm" (ngSubmit)="onSubmit()">
     <div class="modal-header">
       <h4 class="modal-title">Manage Collection</h4>
       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -64,41 +58,47 @@
     </div>
     <div class="modal-body">
       <p class="text-info">{{modalMessage}}</p>
-
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-6">
 
           <div class="form-group">
             <label for="name">Customer</label>
-            <input type="text" class="form-control" placeholder="Date" aria-label="name" aria-describedby="customerDetails">
+            <input type="text" id="customerFullName" formControlName="customerFullName" class="form-control" readonly="readonly">
           </div>
 
           <div class="form-group">
-            <label for="name">Collection Date</label>
-            <input type="text" class="form-control" placeholder="Date" aria-label="name" aria-describedby="collectionDate">
+            <label for="dateTime">Collection Date</label>
+            <input type="text" id="dateTime" class="form-control" placeholder="Date" aria-label="dateTime" aria-describedby="collectionDate">
+            <div *ngIf="colForm.get('dateTime').touched && colForm.get('dateTime').errors" class="form-text text-muted error">
+              <span *ngIf="colForm.get('dateTime').errors.required">Collection Date is required.</span>
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="name">Calculated Amount</label>
-            <input type="text" class="form-control" aria-label="name" aria-describedby="callculatedAmount">
-          </div>
-
-          <div class="form-group">
-            <label for="name">Collection Amount</label>
-            <input type="text" class="form-control" aria-label="name" aria-describedby="collectionAmount">
-          </div>
-
-        </div>
-        <div class="col-md-7">
           <div class="form-group">
             <label for="name">Comments</label>
-            <textarea class="form-control" aria-label="name" aria-describedby="collectionAmount"></textarea>
+            <textarea type="text" id="comments" formControlName="comments" class="form-control" placeholder="Describe the Team - Max 100 Characters"></textarea>
+            <div *ngIf="colForm.get('comments').touched && colForm.get('comments').errors" class="form-text text-muted error">
+              <span *ngIf="teamForm.get('comments').errors.maxlength">Only 100 characters allowed for Description.</span>
+            </div>
           </div>
         </div>
+        <div class="col-md-6">
+
+          <div class="form-group">
+            <label for="name">Calculated Amount (&#8377;)</label>
+            <input type="text" id="calculatedAmount" formControlName="calculatedAmount" class="form-control col-md-6" readonly="readonly">
+          </div>
+
+          <div class="form-group">
+            <label for="name">collection Amount (&#8377;)</label>
+            <input type="text" id="collectionAmount" formControlName="collectionAmount" class="form-control col-md-6">
+            <div *ngIf="colForm.get('collectionAmount').touched && colForm.get('collectionAmount').errors" class="form-text text-muted error">
+              <span *ngIf="colForm.get('collectionAmount').errors.required">Collection Amount is required.</span>
+            </div>
+          </div>
+
+        </div>
       </div>
-
-
-
     </div>
     <div class="modal-footer">
       <button type="submit" class="btn btn-success btn-space">Submit</button>

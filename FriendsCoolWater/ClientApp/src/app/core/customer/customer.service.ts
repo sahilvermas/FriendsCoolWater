@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Customer, CustomerVM } from './customer.model';
 import { shareReplay, flatMap, first } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { CommonService } from '../shared/common.service';
 
 @Injectable()
 export class CustomerService {
@@ -11,7 +12,7 @@ export class CustomerService {
 
   private customers$: Observable<CustomerVM[]>;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private commonService: CommonService) {
     this.apiUrl = new ApiUrl();
   }
 
@@ -44,6 +45,6 @@ export class CustomerService {
 
   // Clear cache
   clearCache() {
-    this.customers$ = null;
+    this.commonService.clearAllCache();
   }
 }

@@ -17,9 +17,6 @@ namespace FriendsCoolWater.Models
         public DateTime DateTime { get; set; }
 
         [Required]
-        public double CalculatedAmount { get; set; }
-
-        [Required]
         public double CollectionAmount { get; set; }
 
         [MaxLength(100)]

@@ -25,6 +25,7 @@ namespace FriendsCoolWater.Controllers
         public IActionResult GetCollection([FromRoute]DateTime startDate, DateTime endDate)
         {
             var data = (from coll in _db.Collections
+                        join team in _db.TeamEmployees on coll.CreatedBy equals team.EmployeeId
                         join userCreated in _db.Users on coll.CreatedBy equals userCreated.Id into colC
                         join userModified in _db.Users on coll.ModifiedBy equals userModified.Id into colM
                         from userCreated in colM.DefaultIfEmpty()
@@ -32,15 +33,19 @@ namespace FriendsCoolWater.Controllers
                         select new CollectionVM
                         {
                             Id = coll.Id,
+                            TeamId = team.Id,
+                            TeamName = team.Team.Name,
+                            TeamActive = team.Team.Active,
                             DateTime = coll.DateTime,
                             CustomerId = coll.CustomerId,
                             FirmName = coll.Customer.FirmName,
                             CustomerName = coll.Customer.CustomerName,
-                            CalculatedAmount = coll.CalculatedAmount,
+                            CustomerActive = coll.Customer.Active,
+                            CalculatedAmount = coll.Customer.UnitPerDay * coll.Customer.UnitPrice,
                             CollectionAmount = coll.CollectionAmount,
                             Comments = coll.Comments,
                             CreatedBy = coll.CreatedBy,
-                            CreatedByName = colC.FirstOrDefault().UserName,
+                            EmployeeByName = colC.FirstOrDefault().UserName,
                             CreatedOn = coll.CreatedOn,
                             ModifiedBy = coll.ModifiedBy,
                             ModifiedByName = colM.FirstOrDefault() == null ? string.Empty : colM.First().UserName,
@@ -76,8 +81,7 @@ namespace FriendsCoolWater.Controllers
             {
                 return NotFound();
             }
-
-            collection.CalculatedAmount = formData.CalculatedAmount;
+            
             collection.CollectionAmount = formData.CollectionAmount;
             collection.Comments = formData.Comments;
             collection.ModifiedBy = formData.ModifiedBy;
@@ -86,7 +90,7 @@ namespace FriendsCoolWater.Controllers
             _db.Entry(collection).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             await _db.SaveChangesAsync();
 
-            return Ok(new JsonResult($"The Team with Id {id} updated sucessfully."));
+            return Ok(new JsonResult($"Collection with Id {id} updated sucessfully."));
         }
 
         [HttpDelete("[action]/{id}")]
