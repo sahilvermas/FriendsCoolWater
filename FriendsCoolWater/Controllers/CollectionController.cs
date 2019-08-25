@@ -1,16 +1,111 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FriendsCoolWater.Data;
+using FriendsCoolWater.Models;
+using FriendsCoolWater.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FriendsCoolWater.Controllers
 {
+    [Route("api/[controller]")]
     public class CollectionController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public CollectionController(UserManager<IdentityUser> userManager, ApplicationDbContext db)
         {
-            return View();
+            _userManager = userManager;
+            _db = db;
+        }
+
+        [HttpGet("[action]/{startDate}/{endDate}")]
+        public IActionResult GetCollection([FromRoute]DateTime startDate, DateTime endDate)
+        {
+            var data = (from coll in _db.Collections
+                        join userCreated in _db.Users on coll.CreatedBy equals userCreated.Id into colC
+                        join userModified in _db.Users on coll.ModifiedBy equals userModified.Id into colM
+                        from userCreated in colM.DefaultIfEmpty()
+                        where coll.DateTime.Date >= startDate.Date && coll.DateTime.Date <= endDate.Date
+                        select new CollectionVM
+                        {
+                            Id = coll.Id,
+                            DateTime = coll.DateTime,
+                            CustomerId = coll.CustomerId,
+                            FirmName = coll.Customer.FirmName,
+                            CustomerName = coll.Customer.CustomerName,
+                            CalculatedAmount = coll.CalculatedAmount,
+                            CollectionAmount = coll.CollectionAmount,
+                            Comments = coll.Comments,
+                            CreatedBy = coll.CreatedBy,
+                            CreatedByName = colC.FirstOrDefault().UserName,
+                            CreatedOn = coll.CreatedOn,
+                            ModifiedBy = coll.ModifiedBy,
+                            ModifiedByName = colM.FirstOrDefault() == null ? string.Empty : colM.First().UserName,
+                            ModifiedOn = coll.ModifiedOn
+                        }).ToList();
+
+            return Ok(data);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> SaveCollection([FromBody]CollectionModel formData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _db.Collections.AddAsync(formData);
+            await _db.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> UpdateCollection([FromRoute]int id, [FromBody]CollectionModel formData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var collection = _db.Collections.First(c => c.Id == id);
+            if (collection == null)
+            {
+                return NotFound();
+            }
+
+            collection.CalculatedAmount = formData.CalculatedAmount;
+            collection.CollectionAmount = formData.CollectionAmount;
+            collection.Comments = formData.Comments;
+            collection.ModifiedBy = formData.ModifiedBy;
+            collection.ModifiedOn = formData.ModifiedOn;
+
+            _db.Entry(collection).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            await _db.SaveChangesAsync();
+
+            return Ok(new JsonResult($"The Team with Id {id} updated sucessfully."));
+        }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteCollection([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var collection = await _db.Collections.FindAsync(id);
+            if (collection == null)
+            {
+                return NotFound();
+            }
+
+            _db.Collections.Remove(collection);
+            await _db.SaveChangesAsync();
+            return Ok(new JsonResult($"Collection with Id {id} deleted sucessfully."));
         }
     }
 }

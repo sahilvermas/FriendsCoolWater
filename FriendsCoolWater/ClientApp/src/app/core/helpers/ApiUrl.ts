@@ -16,4 +16,8 @@ export class ApiUrl {
   public updateCustomerUrl = `${this.baseUrl}customer/updateCustomer/`;
   public deleteCustomerUrl = `${this.baseUrl}customer/deleteCustomer/`;
 
+  public getCollectionUrl = `${this.baseUrl}collection/GetCollection/`;
+  public addCollectionUrl = `${this.baseUrl}collection/saveCollection`;
+  public updateCollectionUrl = `${this.baseUrl}collection/updateCollection`;
+  public deleteCollectionUrl = `${this.baseUrl}collection/deleteCollection`;
 }

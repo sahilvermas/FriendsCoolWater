@@ -49,7 +49,6 @@ export class CustomerListComponent implements OnInit {
   @ViewChild('cusDelTemplate', { static: false }) cusDelModal: TemplateRef<any>;
 
   ngOnInit() {
-    // Modal Message
     this.modalMessage = 'All Fields Are Mandatory';
 
     this.accountService.loggedUserId.subscribe(result => { this.loggedUserId = result; });

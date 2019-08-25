@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment';
+import { Team } from '../../team/team.Model';
+
 
 @Component({
   selector: 'app-filter',
@@ -8,10 +10,15 @@ import * as moment from 'moment';
 })
 export class FilterComponent implements OnInit {
 
+  @Input() teams: Team[];
+  selectedTeam: number = -1;
   constructor() { }
 
   ngOnInit() {
-    console.log(moment.now)
+
   }
 
+  resetSearch(): void {
+    this.selectedTeam = -1;
+  }
 }
