@@ -2,6 +2,7 @@
 
 namespace FriendsCoolWater.Models
 {
+    using Microsoft.AspNetCore.Identity;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -31,16 +32,19 @@ namespace FriendsCoolWater.Models
         public DateTime CreatedOn { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(450)]
         public string CreatedBy { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(450)]
         public string ModifiedBy { get; set; }
 
         [ForeignKey("CustomerId")]
         public virtual CustomerModel Customer { get; set; }
+
+        [ForeignKey("CreatedBy")]
+        public virtual IdentityUser Employee { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace FriendsCoolWater.Controllers
                     Name = t.Name,
                     Description = t.Description,
                     Active = t.Active,
-                    TeamEmployees = t.TeamEmployees.ToList(),
+                    Employees = t.Employees.ToList(),
                     CreatedBy = t.CreatedBy,
                     CreatedOn = t.CreatedOn,
                     ModifiedBy = t.ModifiedBy,
@@ -52,14 +52,13 @@ namespace FriendsCoolWater.Controllers
         [HttpGet("[action]")]
         public IActionResult GetEmployeesInTeams()
         {
-            var data = _db.TeamEmployees
+            var data = _db.Employees
                 .Select(t => new TeamEmployeeVM
                 {
-                    Id = t.Id,
                     TeamId = t.TeamId,
                     EmployeeId = t.EmployeeId,
                     TeamName = t.Team.Name,
-                    EmployeeName = t.Employee.UserName
+                    EmployeeName = $"{t.FirstName} {t.LastName}"
                 }).ToList();
 
             return Ok(data);

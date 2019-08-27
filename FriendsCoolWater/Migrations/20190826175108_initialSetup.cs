@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FriendsCoolWater.Migrations
 {
-    public partial class InitialSetup : Migration
+    public partial class initialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -203,7 +203,6 @@ namespace FriendsCoolWater.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DateTime = table.Column<DateTime>(nullable: false),
-                    CalculatedAmount = table.Column<double>(nullable: false),
                     CollectionAmount = table.Column<double>(nullable: false),
                     Comments = table.Column<string>(maxLength: 100, nullable: true),
                     Fk_CustomerId = table.Column<int>(nullable: false),
@@ -219,6 +218,34 @@ namespace FriendsCoolWater.Migrations
                         name: "FK_Collections_Customers_Fk_CustomerId",
                         column: x => x.Fk_CustomerId,
                         principalTable: "Customers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Fk_TeamId = table.Column<int>(nullable: false),
+                    Fk_EmployeeId = table.Column<string>(maxLength: 450, nullable: false),
+                    FirstName = table.Column<string>(maxLength: 40, nullable: false),
+                    LastName = table.Column<string>(maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Employees_AspNetUsers_Fk_EmployeeId",
+                        column: x => x.Fk_EmployeeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Employees_Teams_Fk_TeamId",
+                        column: x => x.Fk_TeamId,
+                        principalTable: "Teams",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -281,6 +308,16 @@ namespace FriendsCoolWater.Migrations
                 name: "IX_Collections_Fk_CustomerId",
                 table: "Collections",
                 column: "Fk_CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Fk_EmployeeId",
+                table: "Employees",
+                column: "Fk_EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_Fk_TeamId",
+                table: "Employees",
+                column: "Fk_TeamId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -304,16 +341,19 @@ namespace FriendsCoolWater.Migrations
                 name: "Collections");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Teams");
         }
     }
 }

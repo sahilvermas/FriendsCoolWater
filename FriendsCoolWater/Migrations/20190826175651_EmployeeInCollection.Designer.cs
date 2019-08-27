@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FriendsCoolWater.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190821185021_TeamEmployeeModel")]
-    partial class TeamEmployeeModel
+    [Migration("20190826175651_EmployeeInCollection")]
+    partial class EmployeeInCollection
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,6 @@ namespace FriendsCoolWater.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("CalculatedAmount");
-
                     b.Property<double>("CollectionAmount");
 
                     b.Property<string>("Comments")
@@ -36,7 +34,7 @@ namespace FriendsCoolWater.Migrations
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(450);
 
                     b.Property<DateTime>("CreatedOn");
 
@@ -46,11 +44,13 @@ namespace FriendsCoolWater.Migrations
                     b.Property<DateTime>("DateTime");
 
                     b.Property<string>("ModifiedBy")
-                        .HasMaxLength(50);
+                        .HasMaxLength(450);
 
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
 
                     b.HasIndex("CustomerId");
 
@@ -101,9 +101,9 @@ namespace FriendsCoolWater.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("FriendsCoolWater.Models.TeamEmployeeModel", b =>
+            modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -111,6 +111,13 @@ namespace FriendsCoolWater.Migrations
                         .IsRequired()
                         .HasColumnName("Fk_EmployeeId")
                         .HasMaxLength(450);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(40);
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(40);
 
                     b.Property<int>("TeamId")
                         .HasColumnName("Fk_TeamId");
@@ -121,7 +128,7 @@ namespace FriendsCoolWater.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("TeamEmployees");
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("FriendsCoolWater.Models.TeamModel", b =>
@@ -338,13 +345,18 @@ namespace FriendsCoolWater.Migrations
 
             modelBuilder.Entity("FriendsCoolWater.Models.CollectionModel", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Employee")
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("FriendsCoolWater.Models.CustomerModel", "Customer")
                         .WithMany("Collections")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("FriendsCoolWater.Models.TeamEmployeeModel", b =>
+            modelBuilder.Entity("FriendsCoolWater.Models.EmployeeModel", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Employee")
                         .WithMany()
@@ -352,7 +364,7 @@ namespace FriendsCoolWater.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FriendsCoolWater.Models.TeamModel", "Team")
-                        .WithMany("TeamEmployees")
+                        .WithMany("Employees")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

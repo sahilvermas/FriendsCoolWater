@@ -35,6 +35,10 @@ export class CollectionService {
     return this.http.put<Collection>(this.apiUrl.updateCollectionUrl + collectionId, collection);
   }
 
+  deleteCollection(collectionId: number) {
+    return this.http.delete(this.apiUrl.deleteCollectionUrl + collectionId);
+  }
+
   clearCache() {
     this.commonService.clearAllCache();
   }

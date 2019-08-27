@@ -1,5 +1,9 @@
 <div class="container-fluid">
-  <app-filter [teams]="teams"></app-filter>
+  <app-filter [teams]="teams" [customers]="customers" class="filter"></app-filter>
+
+  <div *ngIf="!collections.length">
+    <div class="no-data">No data found.</div>
+  </div>
 
   <div *ngIf="collections.length">
     <div class="row header">
@@ -47,7 +51,7 @@
   </div>
 </div>
 
-<!-- MANAGE TEAM MODAL START-->
+<!-- MANAGE COLLECTION MODAL START-->
 <ng-template #collectionTemplate>
   <form [formGroup]="colForm" (ngSubmit)="onSubmit()">
     <div class="modal-header">
@@ -62,16 +66,13 @@
         <div class="col-md-6">
 
           <div class="form-group">
-            <label for="name">Customer</label>
-            <input type="text" id="customerFullName" formControlName="customerFullName" class="form-control" readonly="readonly">
+            <label for="name">Employee</label>
+            <input type="text" id="employeeWithTeam" formControlName="employeeWithTeam" class="form-control" readonly="readonly">
           </div>
 
           <div class="form-group">
-            <label for="dateTime">Collection Date</label>
-            <input type="text" id="dateTime" class="form-control" placeholder="Date" aria-label="dateTime" aria-describedby="collectionDate">
-            <div *ngIf="colForm.get('dateTime').touched && colForm.get('dateTime').errors" class="form-text text-muted error">
-              <span *ngIf="colForm.get('dateTime').errors.required">Collection Date is required.</span>
-            </div>
+            <label for="name">Customer</label>
+            <input type="text" id="customerFullName" formControlName="customerFullName" class="form-control" readonly="readonly">
           </div>
 
           <div class="form-group">
@@ -81,8 +82,17 @@
               <span *ngIf="teamForm.get('comments').errors.maxlength">Only 100 characters allowed for Description.</span>
             </div>
           </div>
+
         </div>
         <div class="col-md-6">
+
+          <div class="form-group">
+            <label for="dateTime">Collection Date</label>
+            <input type="text" id="dateTime" class="form-control col-md-6" placeholder="Date" aria-label="dateTime" aria-describedby="collectionDate">
+            <div *ngIf="colForm.get('dateTime').touched && colForm.get('dateTime').errors" class="form-text text-muted error">
+              <span *ngIf="colForm.get('dateTime').errors.required">Collection Date is required.</span>
+            </div>
+          </div>
 
           <div class="form-group">
             <label for="name">Calculated Amount (&#8377;)</label>
@@ -106,4 +116,23 @@
     </div>
   </form>
 </ng-template>
-<!-- MANAGE TEAM MODAL START-->
+<!-- MANAGE COLLECTION MODAL START-->
+
+
+<!-- DELETE COLLECTION MODAL START-->
+<ng-template #colDeleteTemplate>
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Confirmation!</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-danger">
+    <h4>Are you confirm to delete the collection?</h4>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="deleteCollection()">Yes</button>
+    <button type="button" class="btn btn-default" (click)="modalRef.hide()">No</button>
+  </div>
+</ng-template>
+<!-- DELETE COLLECTION MODAL START-->

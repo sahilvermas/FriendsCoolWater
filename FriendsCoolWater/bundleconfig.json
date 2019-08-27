@@ -4,5 +4,11 @@
     "inputFiles": [
       "ClientApp/src/styles.css"
     ]
+  },
+  {
+    "outputFileName": "ClientApp/src/app/core/home/home.component.min.html",
+    "inputFiles": [
+      "ClientApp/src/app/core/home/home.component.html"
+    ]
   }
 ]

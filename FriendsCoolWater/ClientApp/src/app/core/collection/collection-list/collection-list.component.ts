@@ -11,6 +11,8 @@ import { Team } from '../../team/team.Model';
 import { CollectionService } from '../collection.service';
 import { Collection } from '../collection.model';
 import { debounce } from 'rxjs/operators';
+import { Customer } from '../../customer/customer.model';
+import { CustomerService } from '../../customer/customer.service';
 
 @Component({
   selector: 'app-collection-list',
@@ -27,12 +29,16 @@ export class CollectionListComponent implements OnInit {
   teams$: Observable<Team[]>;
   teams: Team[] = [];
 
+  customers$: Observable<Customer[]>;
+  customers: Customer[] = [];
+
   collections$: Observable<Collection[]>;
   collections: Collection[] = [];
 
   colForm: FormGroup;
 
   @ViewChild('collectionTemplate', { static: false }) collectionModal: TemplateRef<any>;
+  @ViewChild('colDeleteTemplate', { static: false }) colDeleteModal: TemplateRef<any>;
 
   constructor(
     private modalService: BsModalService,
@@ -42,6 +48,7 @@ export class CollectionListComponent implements OnInit {
     private accountService: AccountService,
     private formBuilder: FormBuilder,
     private teamService: TeamService,
+    private customerService: CustomerService,
     private collectionService: CollectionService) { }
 
   ngOnInit() {
@@ -59,12 +66,14 @@ export class CollectionListComponent implements OnInit {
       calculatedAmount: new FormControl(0),
       collectionAmount: new FormControl(0, Validators.required),
       comments: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      employeeWithTeam: new FormControl(''),
       createdOn: new FormControl(''),
       createdBy: new FormControl(''),
       modifiedOn: new FormControl(''),
       modifiedBy: new FormControl('')
     });
     this.getTeams();
+    this.getCustomers();
 
     this.getCollection(new Date(), new Date());
   }
@@ -91,11 +100,26 @@ export class CollectionListComponent implements OnInit {
     });
   }
 
+  getCustomers() {
+
+    this.customers$ = this.customerService.getCustomers();
+
+    this.customers$.subscribe(result => {
+      this.customers = result;
+      this.chRef.detectChanges();
+    }, error => {
+      if (error.status === 401) {
+        console.log('Unauthorized Access');
+      }
+    });
+  }
+
   getCollection(startDate: Date, endDate: Date) {
     this.collections$ = this.collectionService.getCollection(startDate, endDate);
 
     this.collections$.subscribe(result => {
       this.collections = result;
+      console.log(result);
       this.chRef.detectChanges();
     }, error => {
       if (error.status === 401) {
@@ -117,6 +141,7 @@ export class CollectionListComponent implements OnInit {
       calculatedAmount: col.calculatedAmount,
       collectionAmount: col.collectionAmount,
       comments: col.comments,
+      employeeWithTeam: `${col.teamName} | ${col.createdByName}`,
       createdOn: col.createdOn,
       createdBy: col.createdBy,
       modifiedOn: col.modifiedOn,
@@ -132,9 +157,9 @@ export class CollectionListComponent implements OnInit {
       return false;
     }
 
-    let colData = this.colForm.value;
+    const colData = this.colForm.value;
 
-    let col: Collection = {
+    const col: Collection = {
       id: colData.id,
       customerId: colData.customerId,
       dateTime: colData.dateTime,
@@ -151,7 +176,26 @@ export class CollectionListComponent implements OnInit {
       this.collectionService.clearCache();
       this.getCollection(new Date(), new Date());
       this.modalRef.hide();
-      this.toastr.success(result.value);
+      this.toastr.success('Collection saved successfully');
     });
+  }
+
+  onDeleteConfirm(col: Collection) {
+    this.selectedCol = col;
+    this.showModal(this.colDeleteModal, 'md');
+  }
+
+  deleteCollection() {
+    if (this.selectedCol) {
+
+      this.collectionService.deleteCollection(this.selectedCol.id).subscribe(result => {
+        this.collectionService.clearCache();
+        this.getCollection(new Date(), new Date());
+
+        this.modalRef.hide();
+        this.toastr.success('Collection deleted sucessfully');
+      });
+
+    }
   }
 }

@@ -17,7 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { ToastService } from './shared/toast.service';
 import { LoaderService } from './shared/loader.service';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { CommonService } from './shared/common.service';
 
 @NgModule({
   declarations: [
@@ -32,10 +31,11 @@ import { CommonService } from './shared/common.service';
     AccountModule,
     TeamModule,
     CustomerModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule,    
     ToastrModule.forRoot(),
     NgxSpinnerModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BrowserAnimationsModule,
   ],
   exports: [
     NavBarComponent,
@@ -49,4 +49,6 @@ import { CommonService } from './shared/common.service';
     AuthGuardService, ToastService, LoaderService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }]
 })
-export class CoreModule { }
+export class CoreModule {
+  
+}

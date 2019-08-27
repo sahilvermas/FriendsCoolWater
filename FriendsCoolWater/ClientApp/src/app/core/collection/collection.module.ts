@@ -7,6 +7,7 @@ import { CollectionListComponent } from './collection-list/collection-list.compo
 import { FilterComponent } from './filter/filter.component';
 import { CommonService } from '../shared/common.service';
 import { CollectionService } from './collection.service';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -15,7 +16,9 @@ import { CollectionService } from './collection.service';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    CollectionRoutingModule
+    CollectionRoutingModule,
+    BsDatepickerModule.forRoot()
+
   ],
   providers: [CollectionService, CommonService]
 })

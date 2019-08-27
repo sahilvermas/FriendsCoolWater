@@ -9,7 +9,7 @@
         public string CustomerName { get; set; }
         public bool CustomerActive { get; set; }
         public double CalculatedAmount { get; set; }
-        public string EmployeeByName { get; set; }
+        public string CreatedByName { get; set; }
         public string ModifiedByName { get; set; }
     }
 }

@@ -3,105 +3,146 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
 .body-wrapper {
-    margin-top: 2px
+  margin-top: 2px;
+  height: 100%;
 }
 
 label {
   font-weight: bold;
 }
 
+.cursor {
+  cursor: pointer;
+}
+
 .modal-content {
-    border-radius: 0.1rem !important;
-    border: none;
+  border-radius: 0.1rem !important;
+  border: none;
 }
 
 .modal-header {
-    padding: 0.6em 1rem;
-    border-radius: 0.1em;
-    background-color: #3ccc59;
-    color: #fff;
+  padding: 0.6em 1rem;
+  border-radius: 0.1em;
+  background-color: #3ccc59;
+  color: #fff;
 }
 
 .modal-footer {
-    padding: 0.6em 1rem;
+  padding: 0.6em 1rem;
 }
 
 .no-data {
-    border: solid 1px #ddd;
-    padding: 0.5em;
-    border-radius: 1px;
-    background: #fff;
-    color: #686868;
+  border: solid 1px #ddd;
+  padding: 0.5em;
+  border-radius: 1px;
+  background: #fff;
+  color: #686868;
 }
 
 .jumbotron-sm {
-    padding: 0.3em;
+  padding: 0.3em;
 }
 
 .btn-default {
-    border: solid 2px #ddd;
-    background: #eee;
+  border: solid 2px #ddd;
+  background: #eee;
 }
 
 .header {
-    margin: 15px 0;
+  margin: 15px 0;
 }
 
 .link {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .login-info {
-    margin-top: 2px;
-    font-weight: bold;
+  margin-top: 2px;
+  font-weight: bold;
 }
 
 .error {
-    color: red !important;
-    font-size: 12px;
+  color: red !important;
+  font-size: 12px;
 }
 
 .btn-space {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 input[type="search"],
 select {
-    border: solid 1px #b2b2b2;
-    padding: 4px 6px;
+  border: solid 1px #b2b2b2;
+  padding: 4px 6px;
 }
 
 table.dataTable tbody th,
 table.dataTable tbody td {
-    padding: 3px 0px 3px 10px;
-    vertical-align: middle;
+  padding: 3px 0px 3px 10px;
+  vertical-align: middle;
 }
 
 .no-margin {
-    margin: 0 !important;
+  margin: 0 !important;
 }
 
 .h-margin {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .paging_full_numbers,
 .dataTables_info {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 table thead th,
 table tbody td {
-    height: 5px !important;
-    padding: 7px 10px !important;
+  height: 5px !important;
+  padding: 7px 10px !important;
 }
 
 .filter {
-    background: #fff;
-    border: solid 1px #eee;
-    padding: 1em 0;
+  padding: 1em 0.3em;
 }
 
 .btn-rt {
-    margin-right: 1em;
+  margin-right: 1em;
+}
+
+.container-bg {
+  background: url('assets/images/bg-water.jpg');
+  /* Full height */
+  height: calc(100vh - 100px);
+  position: relative;
+  opacity: 0.65;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.bs-datepicker-head {
+  min-width: 270px;
+  height: 42px;
+  padding: 6px;
+  border-radius: 3px 3px 0 0;
+  text-align: justify;
+}
+
+.bs-datepicker-body table td {
+  padding: 0 !important;
+}
+
+.bs-datepicker-body table.days span {
+  width: 26px;
+  height: 26px;
+  line-height: 28px;
+}
+
+.bs-datepicker-head button.next span,
+.bs-datepicker-head button.previous span {
+  font-size: 26px;
+}
+
+.bs-datepicker-container {
+  padding: 0;
 }

@@ -25,17 +25,16 @@ namespace FriendsCoolWater.Controllers
         public IActionResult GetCollection([FromRoute]DateTime startDate, DateTime endDate)
         {
             var data = (from coll in _db.Collections
-                        join team in _db.TeamEmployees on coll.CreatedBy equals team.EmployeeId
-                        join userCreated in _db.Users on coll.CreatedBy equals userCreated.Id into colC
-                        join userModified in _db.Users on coll.ModifiedBy equals userModified.Id into colM
+                        join empCreated in _db.Employees on coll.CreatedBy equals empCreated.EmployeeId
+                        join empModified in _db.Employees on coll.ModifiedBy equals empModified.EmployeeId into colM
                         from userCreated in colM.DefaultIfEmpty()
                         where coll.DateTime.Date >= startDate.Date && coll.DateTime.Date <= endDate.Date
                         select new CollectionVM
                         {
                             Id = coll.Id,
-                            TeamId = team.Id,
-                            TeamName = team.Team.Name,
-                            TeamActive = team.Team.Active,
+                            TeamId = empCreated.TeamId,
+                            TeamName = empCreated.Team.Name,
+                            TeamActive = empCreated.Team.Active,
                             DateTime = coll.DateTime,
                             CustomerId = coll.CustomerId,
                             FirmName = coll.Customer.FirmName,
@@ -45,10 +44,10 @@ namespace FriendsCoolWater.Controllers
                             CollectionAmount = coll.CollectionAmount,
                             Comments = coll.Comments,
                             CreatedBy = coll.CreatedBy,
-                            EmployeeByName = colC.FirstOrDefault().UserName,
+                            CreatedByName = $"{empCreated.FirstName} {empCreated.LastName}",
                             CreatedOn = coll.CreatedOn,
                             ModifiedBy = coll.ModifiedBy,
-                            ModifiedByName = colM.FirstOrDefault() == null ? string.Empty : colM.First().UserName,
+                            ModifiedByName = colM.FirstOrDefault() == null ? string.Empty : $"{colM.First().FirstName} {colM.First().LastName}",
                             ModifiedOn = coll.ModifiedOn
                         }).ToList();
 

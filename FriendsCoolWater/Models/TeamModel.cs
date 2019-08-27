@@ -35,6 +35,6 @@ namespace FriendsCoolWater.Models
         [MaxLength(50)]
         public string ModifiedBy { get; set; }
 
-        public virtual ICollection<TeamEmployeeModel> TeamEmployees { get; set; }
+        public virtual ICollection<EmployeeModel> Employees { get; set; }
     }
 }
